@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>API_KEY</key>
+	<string>AIzaSyBI9jOXYYit7n3W5NrhwBHBZBE5nDdHTMs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>155140371273</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>co.ulascancicek.Freelance</string>
+	<key>PROJECT_ID</key>
+	<string>freelancer-db61e</string>
+	<key>STORAGE_BUCKET</key>
+	<string>freelancer-db61e.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:155140371273:ios:1f0f3a281c05cd7aab6098</string>
+</dict>
+</plist>

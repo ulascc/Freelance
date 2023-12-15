@@ -28,7 +28,13 @@ class AddJobViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+            
+        titleTextField.autocorrectionType = .no
+        explanationTextField.autocorrectionType = .no
+        priceTextField.autocorrectionType = .no
+        categoryTextField.autocorrectionType = .no
+        cityTextField.autocorrectionType = .no
+        
         print("it is job adding page")
         
         categoryTextField.inputView = categoryPickerView

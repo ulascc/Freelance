@@ -8,6 +8,8 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        emailTextField.autocorrectionType = .no
+        passwordTextField.autocorrectionType = .no
         print("this is a login")
     }
 

@@ -12,5 +12,6 @@ struct Job{
     let title: String
     let explanation: String
     let price: String
-    let category: String 
+    let category: String
+    let city: String
 }

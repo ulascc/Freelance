@@ -375,7 +375,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W7t-0y-Kon">
-                                <rect key="frame" x="20" y="501" width="68" height="35"/>
+                                <rect key="frame" x="20" y="501" width="118" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Apply"/>
@@ -386,22 +386,43 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="puplisher" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="19S-wY-Nsh">
                                 <rect key="frame" x="16" y="233" width="319" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="uid" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BJS-Q9-kQZ">
+                                <rect key="frame" x="16" y="417" width="335" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V9E-lb-w9e">
+                                <rect key="frame" x="164" y="501" width="118" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Take it Back">
+                                    <color key="baseBackgroundColor" systemColor="systemPinkColor"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="takeItBackButton:" destination="FB0-ZE-v40" eventType="touchUpInside" id="nsu-rJ-JE1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ncs-b9-rUX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="1LU-Xk-Tli"/>
                     <connections>
+                        <outlet property="applyButton" destination="W7t-0y-Kon" id="8Te-CM-Xb7"/>
                         <outlet property="categoryLabel" destination="e0Q-mk-zQB" id="6B1-QH-ta0"/>
                         <outlet property="cityLabel" destination="DAG-aG-S5t" id="dcG-oB-b1D"/>
                         <outlet property="explanationLabel" destination="u9q-Tj-Eww" id="HhZ-QU-kDT"/>
                         <outlet property="priceLabel" destination="QAQ-mg-zgO" id="eU6-cE-qWU"/>
                         <outlet property="puplisherLabel" destination="19S-wY-Nsh" id="bao-pO-Sfa"/>
+                        <outlet property="takeItBackButton" destination="V9E-lb-w9e" id="lCc-8x-SUs"/>
                         <outlet property="titleLabel" destination="MbS-zp-pzZ" id="pOv-A5-7Rv"/>
+                        <outlet property="uidLabel" destination="BJS-Q9-kQZ" id="mKK-ZH-Zi8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5o6-In-YwS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -597,6 +618,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class JobDetailViewController: UIViewController {
 
@@ -15,6 +16,7 @@ class JobDetailViewController: UIViewController {
     var jobPrice: String?
     var jobCategory: String?
     var jobCity: String?
+    var jobUid: String?
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var explanationLabel: UILabel!
@@ -22,6 +24,9 @@ class JobDetailViewController: UIViewController {
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var uidLabel: UILabel!
+    @IBOutlet weak var applyButton: UIButton!
+    @IBOutlet weak var takeItBackButton: UIButton!
     
     
     
@@ -35,12 +40,151 @@ class JobDetailViewController: UIViewController {
         priceLabel.text = jobPrice
         categoryLabel.text = jobCategory
         cityLabel.text = jobCity
+        uidLabel.text = jobUid
         
-        // Do any additional setup after loading the view.
+        takeItBackButton.isHidden = true
     }
     
     @IBAction func applyButton(_ sender: UIButton) {
-        print("Successfully applied for the job")
+        // Başvurunun kontrolünü yap
+        applicationCheck(jobID: jobUid ?? "") { alreadyApplied in
+            if alreadyApplied {
+                // Kullanıcı zaten başvurmuşsa uyarı mesajını göster
+                let alertController = UIAlertController(title: "Başvuru Zaten Yapıldı", message: "Bu işe zaten başvuruda bulundunuz.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Tamam", style: .default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+            } else {
+                // Başvuru yoksa Firestore koleksiyonuna başvuruyu ekle
+                if let currentUser = Auth.auth().currentUser,
+                   let currentUserEmail = currentUser.email,
+                   let publisherEmail = self.jobPuplisher,
+                   let jobID = self.jobUid {
+                    
+                    // Firestore koleksiyonunu oluştur
+                    let applicationsCollection = Firestore.firestore().collection("applications")
+                    
+                    // Başvuru verisini oluştur
+                    let applicationData = JobApplication(applicantEmail: currentUserEmail,
+                                                         publisherEmail: publisherEmail,
+                                                         jobID: jobID)
+                    
+                    // Firestore koleksiyonuna başvuruyu ekle
+                    applicationsCollection.addDocument(data: [
+                        "applicantEmail": applicationData.applicantEmail,
+                        "publisherEmail": applicationData.publisherEmail,
+                        "jobID": applicationData.jobID
+                    ]) { error in
+                        if let error = error {
+                            // Başvuru sırasında hata oluştuğunda uyarı mesajını göster
+                            let alertController = UIAlertController(title: "Başvuru Hatası", message: "İşe başvuru sırasında bir hata oluştu. Lütfen tekrar deneyin.", preferredStyle: .alert)
+                            alertController.addAction(UIAlertAction(title: "Tamam", style: .default, handler: nil))
+                            self.present(alertController, animated: true, completion: nil)
+                            
+                            print("Error applying for the job: \(error.localizedDescription)")
+                        } else {
+                            // Başvuru başarılıysa başarılı mesajını göster
+                            let alertController = UIAlertController(title: "Başvuru Başarılı", message: "İşe başvurunuz başarıyla alındı.", preferredStyle: .alert)
+                            alertController.addAction(UIAlertAction(title: "Tamam", style: .default, handler: { _ in
+                                self.applyButton.backgroundColor = UIColor.systemGreen
+                                self.applyButton.setTitle("başvuruldu", for: .normal)
+                                self.takeItBackButton.isHidden = false
+                                print("Successfully applied for the job")
+                            }))
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    
+    func applicationCheck(jobID: String, completionHandler: @escaping (Bool) -> Void) {
+        // Firestore koleksiyonunu oluştur
+        let applicationsCollection = Firestore.firestore().collection("applications")
+        
+        // Oturum açmış kullanıcının emailini al
+        guard let currentUserEmail = Auth.auth().currentUser?.email else {
+            // Kullanıcı oturum açmamışsa false döndür
+            completionHandler(false)
+            return
+        }
+        
+        // Başvuruları kontrol et
+        applicationsCollection
+            .whereField("applicantEmail", isEqualTo: currentUserEmail)
+            .whereField("jobID", isEqualTo: jobID)
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error checking application: \(error.localizedDescription)")
+                    // Hata durumunda false döndür
+                    completionHandler(false)
+                } else if let snapshot = snapshot, !snapshot.documents.isEmpty {
+                    // Başvuru bulunduğunda true döndür
+                    completionHandler(true)
+                } else {
+                    // Başvuru bulunamadığında false döndür
+                    completionHandler(false)
+                }
+            }
     }
     
+    
+    @IBAction func takeItBackButton(_ sender: UIButton) {
+        // Oturum açmış kullanıcının bilgilerini al
+        guard let currentUser = Auth.auth().currentUser,
+              let currentUserEmail = currentUser.email,
+              let jobID = jobUid,
+              let publisherEmail = jobPuplisher else {
+                  print("User information is not available.")
+                  return
+        }
+
+        // Firestore koleksiyonunu oluştur
+        let applicationsCollection = Firestore.firestore().collection("applications")
+
+        // Başvuruyu geri almak için filtreleme yap
+        let query = applicationsCollection
+            .whereField("applicantEmail", isEqualTo: currentUserEmail)
+            .whereField("jobID", isEqualTo: jobID)
+            .whereField("publisherEmail", isEqualTo: publisherEmail)
+
+        // Başvuruları getir
+        query.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error.localizedDescription)")
+            } else {
+                // Başvuruları kontrol et
+                if let documents = snapshot?.documents {
+                    for document in documents {
+                        // Dökümanı sil
+                        applicationsCollection.document(document.documentID).delete { error in
+                            if let error = error {
+                                print("Error deleting document: \(error.localizedDescription)")
+                            } else {
+                                print("Application successfully taken back.")
+                                
+                                // Başvuru geri alındıktan sonra ekranda bir geri bildirim göster
+                                self.showAlert(title: "Başvuru Geri Alındı", message: "Başvurunuz başarıyla geri alındı.")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    
+    
+}
+
+
+extension UIViewController {
+    func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            completion?()
+        }))
+        present(alert, animated: true, completion: nil)
+    }
 }

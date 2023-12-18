@@ -13,7 +13,7 @@ class JobCell: UITableViewCell {
     @IBOutlet weak var jobExplanation: UILabel!
     @IBOutlet weak var jobPrice: UILabel!
     @IBOutlet weak var jobCity: UILabel!
-    
+    @IBOutlet weak var jobUid: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

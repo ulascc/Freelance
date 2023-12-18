@@ -28,6 +28,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 // Verileri çekme başarılı.
                 if let documents = snapshot?.documents {
                     self.jobs = documents.compactMap { document in
+                        // Document ID'yi al
+                        let documentID = document.documentID
                         let data = document.data()
                         let title = data["title"] as? String ?? ""
                         let category = data["category"] as? String ?? ""
@@ -35,7 +37,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         let explanation = data["explanation"] as? String ?? ""
                         let price = data["price"] as? String ?? ""
                         let publisher = data["publisher"] as? String ?? ""
-                        return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city)
+                        return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID)
                     }
                     
                     // Verileri kontrol et
@@ -63,6 +65,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.jobExplanation.text = job.explanation
         cell.jobPrice.text = "\(job.price) TL"
         cell.jobCity.text = job.city
+        cell.jobUid.text = job.uid
         
         cell.selectionStyle = .none
         
@@ -106,6 +109,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     destinationVC.jobPrice = "\(selectedJob.price) TL"
                     destinationVC.jobCategory = selectedJob.category
                     destinationVC.jobCity = selectedJob.city
+                    destinationVC.jobUid = selectedJob.uid
                 }
             }
         }

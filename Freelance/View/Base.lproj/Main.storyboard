@@ -398,14 +398,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V9E-lb-w9e">
-                                <rect key="frame" x="164" y="501" width="118" height="35"/>
+                                <rect key="frame" x="20" y="544" width="118" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Take it Back">
                                     <color key="baseBackgroundColor" systemColor="systemPinkColor"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="takeItBackButton:" destination="FB0-ZE-v40" eventType="touchUpInside" id="nsu-rJ-JE1"/>
+                                    <action selector="takeBackApplicationButton:" destination="FB0-ZE-v40" eventType="touchUpInside" id="nsu-rJ-JE1"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -420,7 +420,7 @@
                         <outlet property="explanationLabel" destination="u9q-Tj-Eww" id="HhZ-QU-kDT"/>
                         <outlet property="priceLabel" destination="QAQ-mg-zgO" id="eU6-cE-qWU"/>
                         <outlet property="puplisherLabel" destination="19S-wY-Nsh" id="bao-pO-Sfa"/>
-                        <outlet property="takeItBackButton" destination="V9E-lb-w9e" id="lCc-8x-SUs"/>
+                        <outlet property="takeBackApplicationButton" destination="V9E-lb-w9e" id="lCc-8x-SUs"/>
                         <outlet property="titleLabel" destination="MbS-zp-pzZ" id="pOv-A5-7Rv"/>
                         <outlet property="uidLabel" destination="BJS-Q9-kQZ" id="mKK-ZH-Zi8"/>
                     </connections>
@@ -438,14 +438,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4dK-3m-9fV">
-                                <rect key="frame" x="158" y="375" width="76" height="34"/>
+                                <rect key="frame" x="158" y="241" width="76" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person.crop.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="q7W-iZ-QwO">
-                                <rect key="frame" x="76" y="168" width="240" height="128"/>
+                                <rect key="frame" x="79" y="77" width="234" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -459,7 +459,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e1B-Lf-zj9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6694" y="980"/>
+            <point key="canvasLocation" x="6693.8931297709923" y="979.57746478873241"/>
         </scene>
         <!--Add Job View Controller-->
         <scene sceneID="65d-Yo-XGJ">
@@ -593,8 +593,8 @@
                     <connections>
                         <segue destination="a5E-Oc-J5F" kind="relationship" relationship="viewControllers" id="sSt-V5-221"/>
                         <segue destination="bWf-GM-HGb" kind="relationship" relationship="viewControllers" id="4q4-qe-Hwy"/>
-                        <segue destination="VvB-fX-JSF" kind="relationship" relationship="viewControllers" id="DES-60-Dq5"/>
                         <segue destination="Khx-wd-w9M" kind="relationship" relationship="viewControllers" id="Gqe-tJ-xnj"/>
+                        <segue destination="VvB-fX-JSF" kind="relationship" relationship="viewControllers" id="DES-60-Dq5"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ekp-k5-9VW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

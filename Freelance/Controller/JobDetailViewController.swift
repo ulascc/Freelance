@@ -18,6 +18,7 @@ class JobDetailViewController: UIViewController {
     var jobCity: String?
     var jobUid: String?
     
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var explanationLabel: UILabel!
     @IBOutlet weak var puplisherLabel: UILabel!
@@ -26,7 +27,7 @@ class JobDetailViewController: UIViewController {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var uidLabel: UILabel!
     @IBOutlet weak var applyButton: UIButton!
-    @IBOutlet weak var takeItBackButton: UIButton!
+    @IBOutlet weak var takeBackApplicationButton: UIButton!
     
     
     
@@ -42,10 +43,26 @@ class JobDetailViewController: UIViewController {
         cityLabel.text = jobCity
         uidLabel.text = jobUid
         
-        takeItBackButton.isHidden = true
+        takeBackApplicationButton.isHidden = true
+        
+        applicationCheck(jobID: jobUid ?? "") { alreadyApplied in
+                if alreadyApplied {
+                    self.takeBackApplicationButton.isHidden = false
+                    self.applyButton.isHidden = true
+                    self.applyButton.isUserInteractionEnabled = false
+                    
+                } else {
+                    self.takeBackApplicationButton.isHidden = true
+                }
+            }
+        
+        //checkApplicationStatus()
     }
     
     @IBAction func applyButton(_ sender: UIButton) {
+        
+        selfCheck()
+        
         // Başvurunun kontrolünü yap
         applicationCheck(jobID: jobUid ?? "") { alreadyApplied in
             if alreadyApplied {
@@ -87,7 +104,8 @@ class JobDetailViewController: UIViewController {
                             alertController.addAction(UIAlertAction(title: "Tamam", style: .default, handler: { _ in
                                 self.applyButton.backgroundColor = UIColor.systemGreen
                                 self.applyButton.setTitle("başvuruldu", for: .normal)
-                                self.takeItBackButton.isHidden = false
+                                self.applyButton.isUserInteractionEnabled = false
+                                self.takeBackApplicationButton.isHidden = false
                                 print("Successfully applied for the job")
                             }))
                             self.present(alertController, animated: true, completion: nil)
@@ -130,7 +148,7 @@ class JobDetailViewController: UIViewController {
     }
     
     
-    @IBAction func takeItBackButton(_ sender: UIButton) {
+    @IBAction func takeBackApplicationButton(_ sender: UIButton) {
         // Oturum açmış kullanıcının bilgilerini al
         guard let currentUser = Auth.auth().currentUser,
               let currentUserEmail = currentUser.email,
@@ -166,6 +184,12 @@ class JobDetailViewController: UIViewController {
                                 
                                 // Başvuru geri alındıktan sonra ekranda bir geri bildirim göster
                                 self.showAlert(title: "Başvuru Geri Alındı", message: "Başvurunuz başarıyla geri alındı.")
+                                
+                                self.takeBackApplicationButton.isHidden = true
+                                
+                                self.applyButton.isUserInteractionEnabled = true
+                                self.applyButton.isHidden = false
+                                self.applyButton.setTitle("Apply", for: .normal)
                             }
                         }
                     }
@@ -173,7 +197,58 @@ class JobDetailViewController: UIViewController {
             }
         }
     }
+    
+    
+    func checkApplicationStatus() {
+        // Oturum açmış kullanıcının bilgilerini al
+        guard let currentUser = Auth.auth().currentUser,
+              let currentUserEmail = currentUser.email,
+              let jobID = jobUid,
+              let publisherEmail = jobPuplisher else {
+                  print("User information is not available.")
+                  return
+        }
 
+        // Firestore koleksiyonunu oluştur
+        let applicationsCollection = Firestore.firestore().collection("applications")
+
+        // Başvuruyu geri almak için filtreleme yap
+        let query = applicationsCollection
+            .whereField("applicantEmail", isEqualTo: currentUserEmail)
+            .whereField("jobID", isEqualTo: jobID)
+            .whereField("publisherEmail", isEqualTo: publisherEmail)
+
+        query.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error checking application status: \(error.localizedDescription)")
+                return
+            }
+
+            // Başvuru varsa
+            if let documents = snapshot?.documents, !documents.isEmpty {
+                self.takeBackApplicationButton.isHidden = false
+                print("User has applied for this job :)))).")
+                
+            } else {
+                self.takeBackApplicationButton.isHidden = true
+                print("User has not applied for this job :(((((")
+            }
+        }
+    }
+
+    
+    func selfCheck(){
+        if let currentUser = Auth.auth().currentUser,
+            let currentUserEmail = currentUser.email,
+            let publisherEmail = self.jobPuplisher,
+            currentUserEmail == publisherEmail {
+            // Kullanıcı kendi ilanına başvuruyorsa uyarı mesajını göster
+            let alertController = UIAlertController(title: "Hata", message: "Kendi ilanınıza başvuruda bulunamazsınız.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Tamam", style: .default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+            return
+        }
+    }
     
     
 }

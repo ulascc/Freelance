@@ -1,3 +1,11 @@
+//
+//  applicationsViewController.swift
+//  Freelance
+//
+//  Created by umutcancicek on 23.12.2023. ?
+//
+
+
 import UIKit
 import FirebaseFirestore
 
@@ -103,13 +111,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             performSegue(withIdentifier: "JobDetailSegue", sender: indexPath.row)
         }
         
-        func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-               return UISwipeActionsConfiguration(actions: [])
-           }
-           
-           func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-               return UISwipeActionsConfiguration(actions: [])
-           }
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return UISwipeActionsConfiguration(actions: [])
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return UISwipeActionsConfiguration(actions: [])
+    }
 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

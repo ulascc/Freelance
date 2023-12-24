@@ -109,6 +109,9 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Seçili hücrenin seçimini kaldır
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        // Storyboard üzerinde tanımladığınız segue'yi çalıştırın
+        performSegue(withIdentifier: "ApplicationDetailSegue", sender: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -118,6 +121,29 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         return UISwipeActionsConfiguration(actions: [])
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "ApplicationDetailSegue" {
+                // Hedef view controller'ı alın
+                if let destinationVC = segue.destination as? ApplicationDetailViewController {
+                    // IndexPath'ten seçilen işi alın
+                    if let selectedRow = sender as? Int {
+                        // Seçilen işi JobDetailViewController'a iletmek için gerekli bilgileri alın
+                        let selectedJob = jobs[selectedRow]
+                        print("Selected Job: \(selectedJob)")
+
+                        // JobDetailViewController'ın IBOutlet'lerine değerleri atayın
+                        destinationVC.jobTitle = selectedJob.title
+                        destinationVC.jobExplanation = selectedJob.explanation
+                        destinationVC.jobPuplisher = selectedJob.publisher
+                        destinationVC.jobPrice = "\(selectedJob.price) TL"
+                        destinationVC.jobCategory = selectedJob.category
+                        destinationVC.jobCity = selectedJob.city
+                        destinationVC.jobUid = selectedJob.uid
+                    }
+                }
+            }
+        }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Yatay kaydırmayı kontrol et

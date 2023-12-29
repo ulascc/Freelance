@@ -61,7 +61,8 @@ class AddJobViewController: UIViewController {
                        K.FStore.explanationField : explanation,
                        K.FStore.priceField : price,
                        K.FStore.categoryField : category,
-                       K.FStore.cityField : city
+                       K.FStore.cityField : city,
+                       K.FStore.status : "pending"
                       ]){
                           (error) in
                           if let e = error{

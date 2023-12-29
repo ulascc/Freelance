@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 
 class ApplicationDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+    
     
     var jobTitle: String?
     var jobExplanation: String?
@@ -18,6 +18,8 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
     var jobCategory: String?
     var jobCity: String?
     var jobUid: String?
+    
+    var isJobGiven = false
     
     var applicants: [Applicant] = []
     
@@ -55,54 +57,113 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
         
     }
     
-
+    
     func fetchApplicants() {
-            guard let jobID = jobUid else {
-                print("Job ID not available")
-                return
-            }
+        guard let jobID = jobUid else {
+            print("Job ID not available")
+            return
+        }
 
-            let db = Firestore.firestore()
-            let applicationsCollection = db.collection("applications")
+        let db = Firestore.firestore()
+        let jobsCollection = db.collection("jobs")
+        let givenJobsCollection = db.collection("givenJobs")
+        let applicationsCollection = db.collection("applications")
 
-            // JobID'ye sahip başvuruları getir
-            let query = applicationsCollection.whereField("jobID", isEqualTo: jobID)
+        print("Fetching job...")
 
-            query.getDocuments { [weak self] (snapshot, error) in
-                guard let self = self else { return }
+        // Jobs koleksiyonundan belirli bir dokümanı çek
+        jobsCollection.document(jobID).getDocument { [weak self] (jobDocument, jobsError) in
+            guard let self = self else { return }
 
-                if let error = error {
-                    print("Error fetching applications: \(error.localizedDescription)")
-                } else {
-                    if let documents = snapshot?.documents {
-                        self.applicants = documents.compactMap { document in
-                            let data = document.data()
-                            let applicantEmail = data["applicantEmail"] as? String ?? ""
-                            return Applicant(applicantEmail: applicantEmail)
+            if let jobsError = jobsError {
+                print("Error fetching job: \(jobsError.localizedDescription)")
+            } else {
+                if let jobData = jobDocument?.data(),
+                   let jobStatus = jobData["status"] as? String {
+                    print("Job Status: \(jobStatus)")
+
+                    // Jobs koleksiyonundan alınan jobStatus'a göre işlem yap
+                    if jobStatus == "pending" {
+                        print("Fetching applications...")
+
+                        // JobStatus "pending" ise, Applications koleksiyonundan tüm verileri al
+                        let query = applicationsCollection.whereField("jobID", isEqualTo: jobID)
+
+                        query.getDocuments { [weak self] (snapshot, error) in
+                            guard let self = self else { return }
+
+                            if let error = error {
+                                print("Error fetching applications: \(error.localizedDescription)")
+                            } else {
+                                if let documents = snapshot?.documents {
+                                    self.applicants = documents.compactMap { document in
+                                        let data = document.data()
+                                        let applicantEmail = data["applicantEmail"] as? String ?? ""
+                                        return Applicant(applicantEmail: applicantEmail)
+                                    }
+
+                                    print("Fetched \(self.applicants.count) applicants")
+
+                                    // TableView'ı ana thread üzerinde güncelle
+                                    DispatchQueue.main.async {
+                                        self.applicantsTableView.reloadData()
+                                    }
+                                }
+                            }
                         }
+                    } else if jobStatus == "taken" {
+                        print("Fetching given jobs...")
 
-                        // TableView'ı güncelle
-                        self.applicantsTableView.reloadData()
+                        // JobStatus "taken" ise, GivenJobs koleksiyonundan veriyi al
+                        givenJobsCollection.whereField("jobUid", isEqualTo: jobID).getDocuments { [weak self] (givenJobsSnapshot, givenJobsError) in
+                            guard let self = self else { return }
+
+                            if let givenJobsError = givenJobsError {
+                                print("Error fetching given job: \(givenJobsError.localizedDescription)")
+                            } else {
+                                // GivenJobs koleksiyonundan alınan veriye göre işlem yap
+                                if let givenJobsDocuments = givenJobsSnapshot?.documents {
+                                    self.applicants = givenJobsDocuments.compactMap { givenJobsDocument in
+                                        let givenJobsData = givenJobsDocument.data()
+                                        let applicantEmail = givenJobsData["applicantEmail"] as? String ?? ""
+                                        return Applicant(applicantEmail: applicantEmail)
+                                    }
+
+                                    print("Fetched \(self.applicants.count) applicants")
+
+                                    // TableView'ı ana thread üzerinde güncelle
+                                    DispatchQueue.main.async {
+                                        self.applicantsTableView.reloadData()
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return applicants.count
-        }
-
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ApplicantCell", for: indexPath) as! ApplicantCell
-
-            let applicant = applicants[indexPath.row]
-            cell.applicantLabel.text = applicant.applicantEmail
-
-            // Diğer hücre özelliklerini de doldurabilirsiniz
-            cell.jobGivenLabel.isHidden = true
-
-            return cell
-        }
+        return applicants.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ApplicantCell", for: indexPath) as! ApplicantCell
+        
+        let applicant = applicants[indexPath.row]
+        cell.applicantLabel.text = applicant.applicantEmail
+        cell.jobUidLabel.text = jobUid
+        
+        // Diğer hücre özelliklerini de doldurabilirsiniz
+        cell.jobGivenLabel.isHidden = true
+        cell.jobUidLabel.isHidden = true
+        
+        
+        return cell
+    }
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 86.0 // Örnek olarak 80 birim mesafe belirlendi, siz istediğiniz değeri kullanabilirsiniz.

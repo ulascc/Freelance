@@ -17,6 +17,7 @@ struct K{
         static let titleField = "title"
         static let explanationField = "explanation"
         static let priceField = "price"
+        static let status = "status"
         static let categoryField = "category"
         static let cityField = "city"
         static let dateField = "date"

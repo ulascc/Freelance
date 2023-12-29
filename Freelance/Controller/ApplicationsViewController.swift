@@ -62,7 +62,8 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
                             let explanation = data["explanation"] as? String ?? ""
                             let price = data["price"] as? String ?? ""
                             let publisher = data["publisher"] as? String ?? ""
-                            return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID)
+                            let status = data["status"] as? String ?? ""
+                            return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status)
                         }
 
                         // Verileri kontrol et

@@ -15,4 +15,5 @@ struct Job{
     let category: String
     let city: String
     let uid: String
+    let status: String
 }

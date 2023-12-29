@@ -50,8 +50,15 @@
                                     <action selector="rejectButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ECl-2Z-04D"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="JobUid" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mw-hk-39L">
+                                <rect key="frame" x="164" y="4" width="55" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Job Given ✓" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1j0-FX-gTU">
-                                <rect key="frame" x="287" y="29" width="98" height="27"/>
+                                <rect key="frame" x="238" y="29" width="98" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" systemColor="systemGreenColor"/>
@@ -67,6 +74,7 @@
                 <outlet property="acceptButton" destination="NA5-Kh-fzd" id="Sba-ao-RqN"/>
                 <outlet property="applicantLabel" destination="lRu-Wr-6LN" id="vx0-0Y-6Na"/>
                 <outlet property="jobGivenLabel" destination="1j0-FX-gTU" id="c5z-gr-AUr"/>
+                <outlet property="jobUidLabel" destination="3mw-hk-39L" id="qf4-qy-G1A"/>
                 <outlet property="rejectButton" destination="JJD-XM-VSM" id="1Rc-rq-HpF"/>
             </connections>
             <point key="canvasLocation" x="174.04580152671755" y="35.211267605633807"/>

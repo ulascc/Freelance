@@ -17,8 +17,6 @@ class ApplicantCell: UITableViewCell {
     @IBOutlet weak var rejectButton: UIButton!
     @IBOutlet weak var jobUidLabel: UILabel!
     
-    var isJobGiven = false
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -46,9 +44,34 @@ class ApplicantCell: UITableViewCell {
         // Jobs koleksiyonundaki ilgili job'u güncelle
         updateJobStatus(jobUid: jobUid, newStatus: "taken")
         
+        rejectButton.isHidden = false
         jobGivenLabel.isHidden = false
         acceptButton.isHidden = true
+        
+        
         print("accept button pressed")
+    }
+    
+    
+    @IBAction func rejectButton(_ sender: UIButton) {
+        guard let applicantEmail = applicantLabel.text,
+              let jobUid = jobUidLabel.text else {
+            print("Applicant email or job UID is not available")
+            return
+        }
+
+        // "givenJobs" koleksiyonundan ilgili dokümanı silme işlemi burada gerçekleştirilecek
+        removeFromGivenJobs(applicantEmail: applicantEmail, jobUid: jobUid)
+
+        // Jobs koleksiyonundaki ilgili job'u güncelle
+        updateJobStatus(jobUid: jobUid, newStatus: "pending")
+
+        rejectButton.isHidden = true
+        jobGivenLabel.isHidden = true
+        acceptButton.isHidden = false
+     
+        
+        print("reject button pressed")
     }
     
     func addToGivenJobs(applicantEmail: String, jobUid: String) {
@@ -69,6 +92,35 @@ class ApplicantCell: UITableViewCell {
         }
     }
     
+
+    func removeFromGivenJobs(applicantEmail: String, jobUid: String) {
+        let db = Firestore.firestore()
+        let givenJobsCollection = db.collection("givenJobs")
+
+        // "givenJobs" koleksiyonundan ilgili dokümanı silebilmek için sorgu oluştur
+        let query = givenJobsCollection
+            .whereField("applicantEmail", isEqualTo: applicantEmail)
+            .whereField("jobUid", isEqualTo: jobUid)
+
+        query.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching document to delete: \(error.localizedDescription)")
+            } else {
+                // Dokümanları kontrol et ve her birini sil
+                for document in snapshot?.documents ?? [] {
+                    givenJobsCollection.document(document.documentID).delete { error in
+                        if let error = error {
+                            print("Error deleting document: \(error.localizedDescription)")
+                        } else {
+                            print("Document deleted successfully")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
     func updateJobStatus(jobUid: String, newStatus: String) {
         let db = Firestore.firestore()
         let jobsCollection = db.collection("jobs")
@@ -85,10 +137,6 @@ class ApplicantCell: UITableViewCell {
             }
         }
     }
-    
-    
-    @IBAction func rejectButton(_ sender: UIButton) {
-        print("reject button pressed")
-    }
+
     
 }

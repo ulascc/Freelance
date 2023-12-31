@@ -19,9 +19,11 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
     var jobCity: String?
     var jobUid: String?
     
-    var isJobGiven = false
+    var isJobGiven: Bool = false
     
     var applicants: [Applicant] = []
+    
+    var refreshControl = UIRefreshControl()
     
     @IBOutlet weak var applicantsTableView: UITableView!
     
@@ -53,10 +55,19 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
         // applicantsTableView'ye ApplicationCell'ı kaydettik
         applicantsTableView.register(UINib(nibName: "ApplicantCell", bundle: nil), forCellReuseIdentifier: "ApplicantCell")
         
+        // UIRefreshControl ekleyin
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        applicantsTableView.addSubview(refreshControl)
+        
         fetchApplicants()
         
     }
     
+    @objc func refreshData() {
+        // Firestore'dan verileri çekin
+        fetchApplicants()
+        refreshControl.endRefreshing()
+    }
     
     func fetchApplicants() {
         guard let jobID = jobUid else {
@@ -86,6 +97,8 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
                     if jobStatus == "pending" {
                         print("Fetching applications...")
 
+                        isJobGiven = false
+                        
                         // JobStatus "pending" ise, Applications koleksiyonundan tüm verileri al
                         let query = applicationsCollection.whereField("jobID", isEqualTo: jobID)
 
@@ -113,11 +126,13 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
                         }
                     } else if jobStatus == "taken" {
                         print("Fetching given jobs...")
-
+                        
                         // JobStatus "taken" ise, GivenJobs koleksiyonundan veriyi al
                         givenJobsCollection.whereField("jobUid", isEqualTo: jobID).getDocuments { [weak self] (givenJobsSnapshot, givenJobsError) in
                             guard let self = self else { return }
 
+                            isJobGiven = true
+                            
                             if let givenJobsError = givenJobsError {
                                 print("Error fetching given job: \(givenJobsError.localizedDescription)")
                             } else {
@@ -159,7 +174,16 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
         // Diğer hücre özelliklerini de doldurabilirsiniz
         cell.jobGivenLabel.isHidden = true
         cell.jobUidLabel.isHidden = true
+        cell.rejectButton.isHidden = true
         
+        
+        if isJobGiven == false {
+            cell.acceptButton.isHidden = false
+            cell.rejectButton.isHidden = true
+        } else {
+            cell.acceptButton.isHidden = true
+            cell.rejectButton.isHidden = false
+        }
         
         return cell
     }

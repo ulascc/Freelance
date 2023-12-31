@@ -61,7 +61,10 @@ class JobDetailViewController: UIViewController {
     
     @IBAction func applyButton(_ sender: UIButton) {
         
-        selfCheck()
+        // selfCheck() fonksiyonu true döndürüyorsa direkt çık
+        guard !selfCheck() else {
+            return
+        }
         
         // Başvurunun kontrolünü yap
         applicationCheck(jobID: jobUid ?? "") { alreadyApplied in
@@ -237,7 +240,7 @@ class JobDetailViewController: UIViewController {
     }
 
     
-    func selfCheck(){
+    func selfCheck() -> Bool {
         if let currentUser = Auth.auth().currentUser,
             let currentUserEmail = currentUser.email,
             let publisherEmail = self.jobPuplisher,
@@ -246,8 +249,9 @@ class JobDetailViewController: UIViewController {
             let alertController = UIAlertController(title: "Hata", message: "Kendi ilanınıza başvuruda bulunamazsınız.", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Tamam", style: .default, handler: nil))
             self.present(alertController, animated: true, completion: nil)
-            return
+            return true
         }
+        return false
     }
     
     

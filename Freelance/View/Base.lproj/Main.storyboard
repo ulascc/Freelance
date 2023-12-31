@@ -699,7 +699,7 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="house" catalog="system" width="128" height="104"/>
-        <image name="list.clipboard" catalog="system" width="32" height="32"/>
+        <image name="list.clipboard" catalog="system" width="103" height="128"/>
         <image name="loginBackground" width="5304" height="7952"/>
         <image name="person" catalog="system" width="128" height="121"/>
         <image name="square.and.pencil" catalog="system" width="128" height="113"/>

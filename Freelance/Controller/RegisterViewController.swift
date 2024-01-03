@@ -8,11 +8,20 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var fullNameTextField: UITextField!
-    @IBOutlet weak var aboutTextField: UIImageView!
-    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var aboutTextField: UITextField!
+    @IBOutlet weak var profileImageView: UIImageView!    
+    @IBOutlet weak var phoneNumberTextField: UITextField!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("This is a register")
+        
+        emailTextField.autocorrectionType = .no
+        passwordTextField.autocorrectionType = .no
+        fullNameTextField.autocorrectionType = .no
+        aboutTextField.autocorrectionType = .no
+        phoneNumberTextField.autocorrectionType = .no
         
         // UIImageView'a tıklanınca galeriyi açma işlemi için UITapGestureRecognizer ekleyin
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleImageTap))
@@ -49,50 +58,91 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBAction func RegisterButtonPressed(_ sender: UIButton) {
         if let email = emailTextField.text,
            let password = passwordTextField.text,
-           let fullName = fullNameTextField.text {
-
+           let fullName = fullNameTextField.text,
+           let about = aboutTextField.text,
+           let phoneNumber = phoneNumberTextField.text {
+            
             Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                 if let error = error {
                     print("Error creating user: \(error.localizedDescription)")
                 } else {
-                    // Kullanıcı başarıyla oluşturulduysa
                     if let user = Auth.auth().currentUser {
-                        let db = Firestore.firestore()
-                        let userRef = db.collection("users").document(user.uid)
+                        self.saveUserToFirestore(user, fullName: fullName, email: email, about: about, phoneNumber: phoneNumber)
+                        self.uploadProfileImage(for: user)
+                    }
+                }
+            }
+        }
+    }
 
-                        let userData: [String: Any] = [
-                            "fullName": fullName,
-                            "email": email,
-                            "uid": user.uid
-                            // Diğer kullanıcı bilgilerini buraya ekleyebilirsiniz.
-                        ]
+    func saveUserToFirestore(_ user: User, fullName: String, email: String, about: String, phoneNumber: String) {
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(user.uid)
 
-                        userRef.setData(userData, merge: true) { error in
-                            if let error = error {
-                                print("Firestore'ya kullanıcı bilgilerini eklerken hata oluştu: \(error.localizedDescription)")
-                            } else {
-                                print("Firestore'ya kullanıcı bilgileri başarıyla eklendi.")
-                                
-                                // Profil fotoğrafını Firebase Storage'a kaydet
-                                if let profileImage = self.profileImageView.image,
-                                   let imageData = profileImage.jpegData(compressionQuality: 0.5) {
-                                    
-                                    let storageRef = Storage.storage().reference().child("profile_images").child("\(user.uid).jpg")
+        let userData: [String: Any] = [
+            "fullName": fullName,
+            "email": email,
+            "uid": user.uid,
+            "about": about,
+            "phoneNumber": phoneNumber
+        ]
 
-                                    storageRef.putData(imageData, metadata: nil) { (metadata, error) in
-                                        if let error = error {
-                                            print("Error uploading profile image: \(error.localizedDescription)")
-                                        } else {
-                                            print("Profile image uploaded successfully.")
-                                            // Başarılı yükleme durumunda kullanıcıya bildirim gösterilebilir.
-                                        }
-                                    }
-                                }
-                            }
+        userRef.setData(userData, merge: true) { error in
+            if let error = error {
+                print("Firestore'ya kullanıcı bilgilerini eklerken hata oluştu: \(error.localizedDescription)")
+            } else {
+                print("Firestore'ya kullanıcı bilgileri başarıyla eklendi.")
+                DispatchQueue.main.async {
+                    self.emailTextField.text = ""
+                    self.passwordTextField.text = ""
+                    self.fullNameTextField.text = ""
+                    self.aboutTextField.text = ""
+                    self.phoneNumberTextField.text = ""
+                    self.profileImageView.image = nil
+                }
+            }
+        }
+    }
+
+    func uploadProfileImage(for user: User) {
+        if let profileImage = self.profileImageView.image,
+           let imageData = profileImage.jpegData(compressionQuality: 0.5) {
+            
+            let storageRef = Storage.storage().reference().child("profile_images").child("\(user.uid).jpg")
+
+            storageRef.putData(imageData, metadata: nil) { (metadata, error) in
+                if let error = error {
+                    print("Error uploading profile image: \(error.localizedDescription)")
+                } else {
+                    // Fotoğraf başarıyla yüklendiyse, downloadURL'i al ve Firestore'a kaydet
+                    storageRef.downloadURL { (url, error) in
+                        if let error = error {
+                            print("Error getting download URL: \(error.localizedDescription)")
+                        } else if let downloadURL = url {
+                            // Firestore'a kullanıcı bilgilerini ve fotoğraf URL'ini kaydet
+                            self.saveProfileImageURL(user, downloadURL: downloadURL.absoluteString)
                         }
                     }
                 }
             }
         }
     }
+
+    func saveProfileImageURL(_ user: User, downloadURL: String) {
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(user.uid)
+
+        let userData: [String: Any] = [
+            "profileImageUrl": downloadURL
+        ]
+
+        userRef.setData(userData, merge: true) { error in
+            if let error = error {
+                print("Firestore'ya profil fotoğraf URL'sini eklerken hata oluştu: \(error.localizedDescription)")
+            } else {
+                print("Firestore'ya profil fotoğraf URL'si başarıyla eklendi.")
+            }
+        }
+    }
+    
 }

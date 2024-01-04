@@ -34,7 +34,7 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var uidLabel: UILabel!
-    
+    @IBOutlet weak var informationLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +49,7 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
         puplisherLabel.isHidden = true
         uidLabel.text = jobUid
         uidLabel.isHidden = true
+        informationLabel.isHidden = false
         
         applicantsTableView.dataSource = self
         applicantsTableView.delegate = self
@@ -74,7 +75,7 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
             print("Job ID not available")
             return
         }
-
+        
         let db = Firestore.firestore()
         let jobsCollection = db.collection("jobs")
         let givenJobsCollection = db.collection("givenJobs")
@@ -191,5 +192,21 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 86.0 // Örnek olarak 80 birim mesafe belirlendi, siz istediğiniz değeri kullanabilirsiniz.
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedApplicant = applicants[indexPath.row]
+        
+        // Hücreye tıklanıldığında yapılacak işlemler
+        performSegue(withIdentifier: "showApplicantProfile", sender: selectedApplicant.applicantEmail)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showApplicantProfile", let email = sender as? String {
+            if let destinationVC = segue.destination as? ApplicantProfieViewController {
+                // Segue ile ProfileViewController'a giderken e-posta bilgisini aktar
+                destinationVC.selectedUserEmail = email
+            }
+        }
     }
 }

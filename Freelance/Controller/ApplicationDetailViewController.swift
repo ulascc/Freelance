@@ -49,7 +49,7 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
         puplisherLabel.isHidden = true
         uidLabel.text = jobUid
         uidLabel.isHidden = true
-        informationLabel.isHidden = false
+        informationLabel.isHidden = true
         
         applicantsTableView.dataSource = self
         applicantsTableView.delegate = self
@@ -162,6 +162,7 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        informationLabel.isHidden = applicants.count != 0
         return applicants.count
     }
     

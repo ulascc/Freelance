@@ -11,6 +11,7 @@
 		62009C1C2AFBD7AE00151801 /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62009C1B2AFBD7AE00151801 /* Job.swift */; };
 		621385552AFC01CE005551C8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621385542AFC01CE005551C8 /* ProfileViewController.swift */; };
 		621385592AFC0219005551C8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621385582AFC0219005551C8 /* MainViewController.swift */; };
+		621758A32B488D11009E8FF6 /* MyApplicationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621758A22B488D11009E8FF6 /* MyApplicationsViewController.swift */; };
 		622B99082B2A700000322605 /* JobDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B99072B2A700000322605 /* JobDetailViewController.swift */; };
 		62471CA12AFABB730098FB7A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62471CA02AFABB720098FB7A /* GoogleService-Info.plist */; };
 		62674F692B37AB82007E2272 /* ApplicationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62674F682B37AB82007E2272 /* ApplicationDetailViewController.swift */; };
@@ -48,6 +49,7 @@
 		62009C1B2AFBD7AE00151801 /* Job.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
 		621385542AFC01CE005551C8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		621385582AFC0219005551C8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		621758A22B488D11009E8FF6 /* MyApplicationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApplicationsViewController.swift; sourceTree = "<group>"; };
 		622B99072B2A700000322605 /* JobDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailViewController.swift; sourceTree = "<group>"; };
 		62471CA02AFABB720098FB7A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		62674F682B37AB82007E2272 /* ApplicationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDetailViewController.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				62F08BCC2B365B4D00EF243A /* ApplicationsViewController.swift */,
 				62674F682B37AB82007E2272 /* ApplicationDetailViewController.swift */,
 				6273BF262B473F0100420E5D /* ApplicantProfieViewController.swift */,
+				621758A22B488D11009E8FF6 /* MyApplicationsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				629064B02AFAC838003C7CBF /* Constant.swift in Sources */,
 				6273BF272B473F0100420E5D /* ApplicantProfieViewController.swift in Sources */,
 				62DF03662B37BA3D005166BF /* Applicant.swift in Sources */,
+				621758A32B488D11009E8FF6 /* MyApplicationsViewController.swift in Sources */,
 				62009C1C2AFBD7AE00151801 /* Job.swift in Sources */,
 				62CE2ACE2AFD6094004B9E9B /* Categories.swift in Sources */,
 				628BC3242B28D82C006362FA /* JobCell.swift in Sources */,

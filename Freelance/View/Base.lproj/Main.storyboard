@@ -565,7 +565,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ERe-pd-GI7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6100" y="1292"/>
+            <point key="canvasLocation" x="5512" y="1292"/>
         </scene>
         <!--Job Detail View Controller-->
         <scene sceneID="Voh-Mw-4qh">
@@ -663,7 +663,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5o6-In-YwS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7037" y="1292"/>
+            <point key="canvasLocation" x="6581" y="1292"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="wte-mq-gCA">
@@ -733,6 +733,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X1x-go-Aig">
+                                <rect key="frame" x="22" y="578" width="146" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="My Applications"/>
+                                <connections>
+                                    <segue destination="68z-Sc-dre" kind="show" id="Tlv-wc-pkb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="qny-rg-4XK"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -748,7 +757,40 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e1B-Lf-zj9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7807" y="1156"/>
+            <point key="canvasLocation" x="7969" y="1292"/>
+        </scene>
+        <!--My Applications View Controller-->
+        <scene sceneID="dmk-xi-0bM">
+            <objects>
+                <viewController id="68z-Sc-dre" customClass="MyApplicationsViewController" customModule="Freelance" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ksc-Ev-hkH">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="My Applications " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAz-vx-lhg">
+                                <rect key="frame" x="16" y="97" width="171" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="FLT-iE-rZD">
+                                <rect key="frame" x="0.0" y="144" width="393" height="656"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3j7-8k-XDw"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="7G6-Ft-SFV"/>
+                    <connections>
+                        <outlet property="myApplicationsTableView" destination="FLT-iE-rZD" id="r1Y-gL-csd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="74Y-OM-296" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8867.9389312977091" y="1291.549295774648"/>
         </scene>
         <!--Add Job View Controller-->
         <scene sceneID="65d-Yo-XGJ">
@@ -848,7 +890,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iX0-Mq-AwF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7404" y="-1013"/>
+            <point key="canvasLocation" x="7469" y="-994"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1JJ-ob-vFb">

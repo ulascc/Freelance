@@ -23,12 +23,34 @@ class ApplicantProfieViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(phoneNumberLabelTapped))
+            phoneNumberLabel.isUserInteractionEnabled = true
+            phoneNumberLabel.addGestureRecognizer(tapGesture)
+        
         // Segue ile gelen e-posta bilgisini kullanarak kullanıcı profiline gidin
-                if let email = selectedUserEmail {
-                    fetchUserProfile(for: email)
-                }
+        if let email = selectedUserEmail {
+            fetchUserProfile(for: email)
+        }
     }
-
+    
+    
+    @objc func phoneNumberLabelTapped() {
+        // Telefon numarasına tıklanınca yapılacak işlemleri buraya ekleyin
+        if let phoneNumber = phoneNumberLabel.text {
+            // Telefon numarasının içindeki boşlukları ve özel karakterleri temizle
+            let cleanedPhoneNumber = phoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+            
+            // Sabit bir ülke kodu ekleyerek numarayı düzenle
+            let formattedPhoneNumber = "+90" + cleanedPhoneNumber.dropFirst(1)
+            
+            // Uluslararası formatta bir telefon numarası oluştur
+            if let whatsappURL = URL(string: "https://wa.me/\(formattedPhoneNumber)") {
+                UIApplication.shared.open(whatsappURL, options: [:], completionHandler: nil)
+            }
+        }
+    }
+    
+    
     func fetchUserProfile(for userEmail: String) {
             // E-posta bilgisini kullanarak Firestore'dan kullanıcı verilerini çek
             db.collection("users").whereField("email", isEqualTo: userEmail).getDocuments { [weak self] (snapshot, error) in

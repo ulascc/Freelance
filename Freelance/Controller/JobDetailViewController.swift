@@ -28,7 +28,7 @@ class JobDetailViewController: UIViewController {
     @IBOutlet weak var uidLabel: UILabel!
     @IBOutlet weak var applyButton: UIButton!
     @IBOutlet weak var takeBackApplicationButton: UIButton!
-    
+    @IBOutlet weak var jobIsYoursLabel: UILabel!
     
     
     override func viewDidLoad() {
@@ -44,6 +44,8 @@ class JobDetailViewController: UIViewController {
         uidLabel.text = jobUid
         
         takeBackApplicationButton.isHidden = true
+        jobIsYoursLabel.isHidden = true
+        checkIfJobIsYours()
         
         applicationCheck(jobID: jobUid ?? "") { alreadyApplied in
                 if alreadyApplied {
@@ -253,6 +255,29 @@ class JobDetailViewController: UIViewController {
         }
         return false
     }
+    
+    
+    func checkIfJobIsYours() {
+            if let currentUser = Auth.auth().currentUser,
+               let currentUserEmail = currentUser.email,
+               let jobId = self.jobUid {
+                
+                // Firestore koleksiyonunu referans al
+                let givenJobsCollection = Firestore.firestore().collection("givenJobs")
+                
+                // Veritabanında eşleşen dökümanları kontrol et
+                givenJobsCollection.whereField("applicantEmail", isEqualTo: currentUserEmail)
+                                  .whereField("jobUid", isEqualTo: jobId) // uidLabel.text değeri ile kontrol edildi
+                                  .getDocuments { (snapshot, error) in
+                    if let error = error {
+                        print("Error checking given jobs: \(error.localizedDescription)")
+                    } else if let snapshot = snapshot, !snapshot.documents.isEmpty {
+                        // Eğer eşleşen döküman varsa, iş kullanıcının
+                        self.jobIsYoursLabel.isHidden = false
+                    }
+                }
+            }
+        }
     
     
 }

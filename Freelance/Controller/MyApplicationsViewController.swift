@@ -1,11 +1,12 @@
 import UIKit
 import Firebase
 
-class MyApplicationsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MyApplicationsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
 
     @IBOutlet weak var myApplicationsTableView: UITableView!
 
     var jobs: [Job] = []
+    var refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,6 +15,14 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
         myApplicationsTableView.delegate = self
         myApplicationsTableView.register(UINib(nibName: "JobCell", bundle: nil), forCellReuseIdentifier: "JobCell")
 
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        myApplicationsTableView.addSubview(refreshControl)
+        
+        fetchMyApplicants()
+    }
+    
+    @objc func refreshData() {
+        // Firestore'dan verileri çekin
         fetchMyApplicants()
     }
 
@@ -58,7 +67,7 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
                                         price: jobData["price"] as? String ?? "",
                                         category: jobData["category"] as? String ?? "",
                                         city: jobData["city"] as? String ?? "",
-                                        uid: jobData["uid"] as? String ?? "",
+                                        uid: jobDocument?.documentID ?? "",
                                         status: jobData["status"] as? String ?? ""
                                     )
 
@@ -97,8 +106,48 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Seçili hücrenin seçimini kaldır
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // Storyboard üzerinde tanımladığınız segue'yi çalıştırın
+        performSegue(withIdentifier: "myApplicationsDetailSegue", sender: indexPath.row)
+    }
+    
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 130.0 
     }
+    
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Yatay kaydırmayı kontrol et
+        if scrollView.contentOffset.x != 0 {
+            scrollView.contentOffset.x = 0
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "myApplicationsDetailSegue" {
+                // Hedef view controller'ı alın
+                if let destinationVC = segue.destination as? JobDetailViewController {
+                    // IndexPath'ten seçilen işi alın
+                    if let selectedRow = sender as? Int {
+                        // Seçilen işi JobDetailViewController'a iletmek için gerekli bilgileri alın
+                        let selectedJob = jobs[selectedRow]
+                        print("Selected Job: \(selectedJob)")
+
+                        // JobDetailViewController'ın IBOutlet'lerine değerleri atayın
+                        destinationVC.jobTitle = selectedJob.title
+                        destinationVC.jobExplanation = selectedJob.explanation
+                        destinationVC.jobPuplisher = selectedJob.publisher
+                        destinationVC.jobPrice = "\(selectedJob.price) TL"
+                        destinationVC.jobCategory = selectedJob.category
+                        destinationVC.jobCity = selectedJob.city
+                        destinationVC.jobUid = selectedJob.uid
+                    }
+                }
+            }
+        }
     
 }

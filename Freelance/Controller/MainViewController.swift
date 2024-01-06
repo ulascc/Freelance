@@ -104,14 +104,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 return 130.0 // Örnek olarak 80 birim mesafe belirlendi, siz istediğiniz değeri kullanabilirsiniz.
             }
         
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            // Seçili hücrenin seçimini kaldır
-            tableView.deselectRow(at: indexPath, animated: true)
-
-            // Storyboard üzerinde tanımladığınız segue'yi çalıştırın
-            performSegue(withIdentifier: "JobDetailSegue", sender: indexPath.row)
-        }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Seçili hücrenin seçimini kaldır
+        tableView.deselectRow(at: indexPath, animated: true)
         
+        // Storyboard üzerinde tanımladığınız segue'yi çalıştırın
+        performSegue(withIdentifier: "JobDetailSegue", sender: indexPath.row)
+    }
+    
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         return UISwipeActionsConfiguration(actions: [])
     }

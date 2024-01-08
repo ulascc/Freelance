@@ -86,6 +86,71 @@
             </objects>
             <point key="canvasLocation" x="4669.4656488549617" y="3.5211267605633805"/>
         </scene>
+        <!--Forgot Password View Controller-->
+        <scene sceneID="Xu9-d0-qpa">
+            <objects>
+                <viewController id="Oe0-lb-iK6" customClass="ForgotPasswordViewController" customModule="Freelance" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="D3C-9b-Vmi">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginBackground" translatesAutoresizingMaskIntoConstraints="NO" id="3Ez-FA-bxx">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vdy-tE-Rbd">
+                                <rect key="frame" x="16" y="104" width="250" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="ulas.can2424@gmail.com" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Naf-aP-kLS">
+                                <rect key="frame" x="16" y="199" width="361" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="a4w-Hz-7ZP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zsv-yz-036">
+                                <rect key="frame" x="76.666666666666671" y="271" width="240.33333333333331" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Send Mail for New Password"/>
+                                <connections>
+                                    <action selector="SendNewPasswordButton:" destination="Oe0-lb-iK6" eventType="touchUpInside" id="Ugb-wP-M2y"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="DXz-hX-eZU"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="3Ez-FA-bxx" firstAttribute="bottom" secondItem="DXz-hX-eZU" secondAttribute="bottom" id="0D0-Iv-Kvp"/>
+                            <constraint firstItem="DXz-hX-eZU" firstAttribute="trailing" secondItem="Zsv-yz-036" secondAttribute="trailing" constant="76" id="3JF-8O-3Xk"/>
+                            <constraint firstItem="Naf-aP-kLS" firstAttribute="top" secondItem="Vdy-tE-Rbd" secondAttribute="bottom" constant="53" id="77v-d7-uAW"/>
+                            <constraint firstItem="3Ez-FA-bxx" firstAttribute="leading" secondItem="DXz-hX-eZU" secondAttribute="leading" id="C5f-lv-7N1"/>
+                            <constraint firstItem="Zsv-yz-036" firstAttribute="top" secondItem="Naf-aP-kLS" secondAttribute="bottom" constant="22" id="CtU-Qk-omv"/>
+                            <constraint firstItem="Naf-aP-kLS" firstAttribute="centerX" secondItem="3Ez-FA-bxx" secondAttribute="centerX" id="DLd-C8-6jq"/>
+                            <constraint firstItem="3Ez-FA-bxx" firstAttribute="top" secondItem="DXz-hX-eZU" secondAttribute="top" id="OXg-49-cdE"/>
+                            <constraint firstItem="3Ez-FA-bxx" firstAttribute="top" secondItem="DXz-hX-eZU" secondAttribute="top" id="ZTx-V3-jlA"/>
+                            <constraint firstItem="Naf-aP-kLS" firstAttribute="trailing" secondItem="D3C-9b-Vmi" secondAttribute="trailingMargin" id="ZdL-5W-uvG"/>
+                            <constraint firstItem="Naf-aP-kLS" firstAttribute="top" secondItem="D3C-9b-Vmi" secondAttribute="top" constant="199" id="mfg-Jt-oEd"/>
+                            <constraint firstItem="3Ez-FA-bxx" firstAttribute="bottom" secondItem="DXz-hX-eZU" secondAttribute="bottom" id="nfA-pk-BLh"/>
+                            <constraint firstItem="DXz-hX-eZU" firstAttribute="trailing" secondItem="Zsv-yz-036" secondAttribute="trailing" constant="76" id="oSR-ns-u7b"/>
+                            <constraint firstItem="Naf-aP-kLS" firstAttribute="leading" secondItem="Vdy-tE-Rbd" secondAttribute="leading" id="owt-jB-1GM"/>
+                            <constraint firstItem="3Ez-FA-bxx" firstAttribute="leading" secondItem="DXz-hX-eZU" secondAttribute="leading" id="r0u-QJ-5AP"/>
+                            <constraint firstItem="3Ez-FA-bxx" firstAttribute="trailing" secondItem="DXz-hX-eZU" secondAttribute="trailing" id="rUC-41-IAN"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="HZ6-es-XWT"/>
+                    <connections>
+                        <outlet property="background" destination="3Ez-FA-bxx" id="Egb-3h-HtG"/>
+                        <outlet property="emailTextField" destination="Naf-aP-kLS" id="eCt-We-K24"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Zh-bz-7Q0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5872.5190839694651" y="1164.7887323943662"/>
+        </scene>
         <!--Login View Controller-->
         <scene sceneID="LOp-vf-vRP">
             <objects>
@@ -98,7 +163,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="FeM-Xy-05Z">
-                                <rect key="frame" x="30" y="472.33333333333326" width="330.66666666666669" height="319.66666666666674"/>
+                                <rect key="frame" x="30" y="462.33333333333326" width="330.66666666666669" height="329.66666666666674"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="ulas@gmail.com" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aB3-JN-4Zf">
                                         <rect key="frame" x="0.0" y="0.0" width="330.66666666666669" height="50"/>
@@ -126,14 +191,8 @@
                                             <action selector="loginButtonPressed:" destination="Zjc-Ry-QrU" eventType="touchUpInside" id="Wim-pQ-Boj"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot Password?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ad0-2y-q3u">
-                                        <rect key="frame" x="0.0" y="224.33333333333331" width="330.66666666666669" height="27.666666666666657"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvL-9g-nmz">
-                                        <rect key="frame" x="0.0" y="282.00000000000006" width="330.66666666666669" height="37.666666666666686"/>
+                                        <rect key="frame" x="0.0" y="224.33333333333331" width="330.66666666666669" height="37.666666666666686"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Don't have an account ? Sign Up">
                                             <fontDescription key="titleFontDescription" name="ArialMT" family="Arial" pointSize="21"/>
@@ -141,6 +200,17 @@
                                         </buttonConfiguration>
                                         <connections>
                                             <segue destination="feK-8M-wB1" kind="show" id="Xse-7W-dK9"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3m-Ux-FXo">
+                                        <rect key="frame" x="0.0" y="292.00000000000006" width="330.66666666666669" height="37.666666666666686"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Forgot Password ?">
+                                            <fontDescription key="titleFontDescription" name="ArialMT" family="Arial" pointSize="21"/>
+                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <segue destination="Oe0-lb-iK6" kind="show" identifier="ForgotPasswordSegue" id="fDt-T4-S85"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -179,7 +249,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PEI-9z-p3A" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5536.6412213740459" y="392.95774647887328"/>
+            <point key="canvasLocation" x="5873" y="393"/>
         </scene>
         <!--Register View Controller-->
         <scene sceneID="0t6-6K-BrC">
@@ -293,7 +363,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6UY-rG-ev8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5536.6412213740459" y="-473.23943661971833"/>
+            <point key="canvasLocation" x="5873" y="-480"/>
         </scene>
         <!--Application-->
         <scene sceneID="3Rv-a0-rDU">
@@ -327,7 +397,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RIQ-V9-cSg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8568.702290076335" y="-386.61971830985919"/>
+            <point key="canvasLocation" x="9442" y="-303"/>
         </scene>
         <!--Application Detail View Controller-->
         <scene sceneID="SJu-DA-Aae">
@@ -439,7 +509,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BI2-87-Adh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8568.702290076335" y="369.71830985915494"/>
+            <point key="canvasLocation" x="9442" y="440"/>
         </scene>
         <!--Applicant Profie View Controller-->
         <scene sceneID="sSa-26-CXq">
@@ -530,7 +600,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RuX-nJ-Cq0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9563" y="370"/>
+            <point key="canvasLocation" x="10598" y="439"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="MJO-Nd-Efy">
@@ -565,7 +635,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ERe-pd-GI7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5510.6870229007627" y="1291.549295774648"/>
+            <point key="canvasLocation" x="7691" y="1292"/>
         </scene>
         <!--Job Detail View Controller-->
         <scene sceneID="Voh-Mw-4qh">
@@ -713,7 +783,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5o6-In-YwS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6580.9160305343512" y="1291.549295774648"/>
+            <point key="canvasLocation" x="8630" y="1292"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="wte-mq-gCA">
@@ -813,7 +883,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e1B-Lf-zj9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9206.8702290076326" y="1291.549295774648"/>
+            <point key="canvasLocation" x="11019" y="1292"/>
         </scene>
         <!--My Applications View Controller-->
         <scene sceneID="dmk-xi-0bM">
@@ -847,7 +917,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="74Y-OM-296" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7860" y="1292"/>
+            <point key="canvasLocation" x="9966" y="1292"/>
         </scene>
         <!--Add Job View Controller-->
         <scene sceneID="65d-Yo-XGJ">
@@ -947,7 +1017,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iX0-Mq-AwF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7469" y="-994"/>
+            <point key="canvasLocation" x="9442" y="-1064"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1JJ-ob-vFb">
@@ -987,7 +1057,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ekp-k5-9VW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6695" y="168"/>
+            <point key="canvasLocation" x="7691" y="393"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

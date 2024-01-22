@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseFirestore
+import Firebase
 
 class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -50,6 +51,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Kategori seçimi için TextField'a tıklanılabilirlik özelliği ekle
         filterImageView.isUserInteractionEnabled = true
         filterImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showCategoriesPicker)))
+        
+        citySwitch.isOn = false
     }
     
     @objc func refreshData() {
@@ -94,6 +97,72 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.refreshControl.endRefreshing()
         }
     }
+    
+    
+    @IBAction func citySwitchValueChanged(_ sender: UISwitch) {
+        if sender.isOn {
+            // Eğer switch aktifse, kullanıcının emailini al
+            if let userEmail = Auth.auth().currentUser?.email {
+                // Firestore sorgusu: Kullanıcıları emailine göre filtrele
+                let db = Firestore.firestore()
+                db.collection("users").whereField("email", isEqualTo: userEmail).getDocuments { [weak self] (snapshot, error) in
+                    guard let self = self else { return }
+                    
+                    if let error = error {
+                        print("Veri çekme hatası: \(error.localizedDescription)")
+                        // Hata durumunda kullanıcıya bilgi verme veya başka bir işlem yapma
+                    } else {
+                        // Verileri çekme başarılı
+                        if let document = snapshot?.documents.first {
+                            // Email eşleşen kullanıcının city bilgisini al
+                            let userCity = document["city"] as? String ?? ""
+                            
+                            // Firestore'dan city bilgisi alındı, şimdi jobs tablosunu bu bilgiye göre filtreleyerek verileri çek
+                            if !userCity.isEmpty {
+                                self.fetchFirestoreDataWithCity(withCity: userCity)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            // Eğer switch kapalıysa, tüm verileri çek
+            fetchFirestoreData()
+        }
+    }
+    
+    
+    func fetchFirestoreDataWithCity(withCity city: String) {
+        let db = Firestore.firestore()
+        
+        db.collection("jobs").whereField("city", isEqualTo: city).getDocuments { [weak self] (snapshot, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Veri çekme hatası: \(error.localizedDescription)")
+                // Hata durumunda kullanıcıya bilgi verme veya başka bir işlem yapma
+            } else {
+                // Verileri çekme başarılı.
+                if let documents = snapshot?.documents {
+                    self.jobs = documents.compactMap { document in
+                        let documentID = document.documentID
+                        let data = document.data()
+                        let title = data["title"] as? String ?? ""
+                        let category = data["category"] as? String ?? ""
+                        let city = data["city"] as? String ?? ""
+                        let explanation = data["explanation"] as? String ?? ""
+                        let price = data["price"] as? String ?? ""
+                        let publisher = data["publisher"] as? String ?? ""
+                        let status = data["status"] as? String ?? ""
+                        return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status)
+                    }
+                    self.jobsTableView.reloadData()
+                }
+            }
+        }
+    }
+
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return jobs.count

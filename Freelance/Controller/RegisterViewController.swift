@@ -11,7 +11,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var aboutTextField: UITextField!
     @IBOutlet weak var profileImageView: UIImageView!    
     @IBOutlet weak var phoneNumberTextField: UITextField!
+    @IBOutlet weak var cityTextField: UITextField!
     
+    var cityPickerView = UIPickerView()
+    let cities = Cities.cities
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +25,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         fullNameTextField.autocorrectionType = .no
         aboutTextField.autocorrectionType = .no
         phoneNumberTextField.autocorrectionType = .no
+        
+        cityTextField.inputView = cityPickerView
+        cityPickerView.delegate = self
+        cityPickerView.dataSource = self
         
         // UIImageView'a tıklanınca galeriyi açma işlemi için UITapGestureRecognizer ekleyin
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleImageTap))
@@ -56,26 +63,31 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
 
     @IBAction func RegisterButtonPressed(_ sender: UIButton) {
-        if let email = emailTextField.text,
-           let password = passwordTextField.text,
-           let fullName = fullNameTextField.text,
-           let about = aboutTextField.text,
-           let phoneNumber = phoneNumberTextField.text {
-            
-            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-                if let error = error {
-                    print("Error creating user: \(error.localizedDescription)")
-                } else {
-                    if let user = Auth.auth().currentUser {
-                        self.saveUserToFirestore(user, fullName: fullName, email: email, about: about, phoneNumber: phoneNumber)
-                        self.uploadProfileImage(for: user)
-                    }
+        guard let email = emailTextField.text, !email.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty,
+              let fullName = fullNameTextField.text, !fullName.isEmpty,
+              let about = aboutTextField.text, !about.isEmpty,
+              let phoneNumber = phoneNumberTextField.text, !phoneNumber.isEmpty,
+              let city = cityTextField.text, !city.isEmpty else {
+                // Giriş alanlarından biri boşsa hata mesajı göster
+                showAlert(title: "Hata", message: "Tüm alanları doldurmalısınız.")
+                return
+        }
+
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                print("Error creating user: \(error.localizedDescription)")
+            } else {
+                if let user = Auth.auth().currentUser {
+                    self.saveUserToFirestore(user, fullName: fullName, email: email, about: about, phoneNumber: phoneNumber, city: city)
+                    self.uploadProfileImage(for: user)
                 }
             }
         }
     }
 
-    func saveUserToFirestore(_ user: User, fullName: String, email: String, about: String, phoneNumber: String) {
+
+    func saveUserToFirestore(_ user: User, fullName: String, email: String, about: String, phoneNumber: String, city: String) {
         let db = Firestore.firestore()
         let userRef = db.collection("users").document(user.uid)
 
@@ -84,7 +96,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             "email": email,
             "uid": user.uid,
             "about": about,
-            "phoneNumber": phoneNumber
+            "phoneNumber": phoneNumber,
+            "city": city
         ]
 
         userRef.setData(userData, merge: true) { error in
@@ -92,17 +105,20 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                 print("Firestore'ya kullanıcı bilgilerini eklerken hata oluştu: \(error.localizedDescription)")
             } else {
                 print("Firestore'ya kullanıcı bilgileri başarıyla eklendi.")
+                self.showAlert(title: "successfully registered", message: "You have successfully registered. Check out the jobs now")
                 DispatchQueue.main.async {
                     self.emailTextField.text = ""
                     self.passwordTextField.text = ""
                     self.fullNameTextField.text = ""
                     self.aboutTextField.text = ""
                     self.phoneNumberTextField.text = ""
+                    self.cityTextField.text = "" // Şehir bilgisini ekledikten sonra temizleyebilirsiniz
                     self.profileImageView.image = nil
                 }
             }
         }
     }
+
 
     func uploadProfileImage(for user: User) {
         if let profileImage = self.profileImageView.image,
@@ -145,4 +161,38 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         }
     }
     
+}
+
+extension RegisterViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch pickerView {
+        case cityPickerView:
+            return cities.count
+        default:
+            return 1
+        }
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch pickerView {
+        case cityPickerView:
+            return cities[row]
+        default:
+            return "data not found"
+        }
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        switch pickerView {
+        case cityPickerView:
+            cityTextField.text = cities[row]
+            cityTextField.resignFirstResponder()
+        default:
+            return
+        }
+    }
 }

@@ -13,7 +13,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBOutlet weak var jobsTableView: UITableView!
     @IBOutlet weak var filterImageView: UIImageView!
-    @IBOutlet weak var ascDescImageView: UIImageView!
+    @IBOutlet weak var citySwitch: UISwitch!
+    
     
     var jobs: [Job] = []
     var refreshControl = UIRefreshControl()

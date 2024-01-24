@@ -68,7 +68,8 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
                                         category: jobData["category"] as? String ?? "",
                                         city: jobData["city"] as? String ?? "",
                                         uid: jobDocument?.documentID ?? "",
-                                        status: jobData["status"] as? String ?? ""
+                                        status: jobData["status"] as? String ?? "",
+                                        imageURL: jobData["imageURLField"] as? String ?? ""
                                     )
 
                                     self.jobs.append(job)
@@ -101,6 +102,8 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
         cell.jobPrice.text = job.price
         cell.jobCity.text = job.city
         cell.jobUid.text = job.uid
+        
+        cell.jobUid.isHidden = true
 
         return cell
     }

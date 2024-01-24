@@ -16,4 +16,5 @@ struct Job{
     let city: String
     let uid: String
     let status: String
+    var imageURL: String 
 }

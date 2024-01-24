@@ -7,8 +7,9 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 
-class AddJobViewController: UIViewController {
+class AddJobViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     
     @IBOutlet weak var titleTextField: UITextField!
@@ -17,6 +18,8 @@ class AddJobViewController: UIViewController {
     @IBOutlet weak var categoryTextField: UITextField!
     @IBOutlet weak var cityTextField: UITextField!
     
+    @IBOutlet weak var jobImage: UIImageView!
+    let imageURLField = "imageURL"
     
     var categoryPickerView = UIPickerView()
     var cityPickerView = UIPickerView()
@@ -47,40 +50,122 @@ class AddJobViewController: UIViewController {
         cityPickerView.delegate = self
         cityPickerView.dataSource = self
         cityPickerView.tag = 2
+        
+        // UITapGestureRecognizer ekleyerek imageView'a tıklama olayını dinle
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
+                jobImage.addGestureRecognizer(tapGesture)
+                jobImage.isUserInteractionEnabled = true
     }
     
     
     @IBAction func publisJopPressed(_ sender: UIButton) {
-        if let title = titleTextField.text, let explanation = explanationTextField.text,
-           let price = priceTextField.text, let category = categoryTextField.text,
-           let city = cityTextField.text,
-           let publisher = Auth.auth().currentUser?.email{
-            db.collection("jobs").addDocument(
-                data: [K.FStore.publisherField : publisher,
-                       K.FStore.titleField : title,
-                       K.FStore.explanationField : explanation,
-                       K.FStore.priceField : price,
-                       K.FStore.categoryField : category,
-                       K.FStore.cityField : city,
-                       K.FStore.status : "pending"
-                      ]){
-                          (error) in
-                          if let e = error{
-                              print("There was an issue saving data to firestore. \(e)")
-                          }else{
-                              print("succesfully saved data")
-                              DispatchQueue.main.async {
-                                  self.titleTextField.text = ""
-                                  self.explanationTextField.text = ""
-                                  self.priceTextField.text = ""
-                                  self.categoryTextField.text = ""
-                                  self.cityTextField.text = ""
-                              }
-                          }
-                      }
+        guard let title = titleTextField.text, !title.isEmpty,
+              let explanation = explanationTextField.text, !explanation.isEmpty,
+              let price = priceTextField.text, !price.isEmpty,
+              let category = categoryTextField.text, !category.isEmpty,
+              let city = cityTextField.text, !city.isEmpty,
+              let publisher = Auth.auth().currentUser?.email,
+              let jobImage = jobImage.image else {
+                // Eğer herhangi bir değer boşsa hata mesajı göster
+                showAlert(message: "Lütfen tüm alanları doldurun.")
+                return
+        }
+
+        // Resmi Firebase Storage'a yükle
+        uploadImageToFirebaseStorage(image: jobImage) { (imageURL) in
+            // Resmin yüklendiği Storage URL'ini aldıktan sonra Firestore'a kaydet
+            self.saveJobDataToFirestore(
+                publisher: publisher,
+                title: title,
+                explanation: explanation,
+                price: price,
+                category: category,
+                city: city,
+                imageURL: imageURL
+            )
+            
+            // jobImage'i boş yap
+            self.jobImage.image = UIImage(named: "photo")
+
+            // Kayıt başarılı alert'i göster
+            self.showAlert(message: "İş ilanı başarıyla yayınlandı.")
         }
     }
     
+    
+    func uploadImageToFirebaseStorage(image: UIImage, completion: @escaping (String) -> Void) {
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
+
+        let imageID = UUID().uuidString
+        let storageRef = Storage.storage().reference().child("job_images/\(imageID).jpg")
+
+        storageRef.putData(imageData, metadata: nil) { (metadata, error) in
+            if let error = error {
+                print("Error uploading image to Firebase Storage: \(error)")
+            } else {
+                // Resmin yüklendiği Storage URL'ini al
+                storageRef.downloadURL { (url, error) in
+                    if let downloadURL = url {
+                        // URL'yi completion handler ile döndür
+                        completion(downloadURL.absoluteString)
+                    } else if let error = error {
+                        print("Error getting download URL: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    func saveJobDataToFirestore(publisher: String, title: String, explanation: String, price: String, category: String, city: String, imageURL: String) {
+        // Firestore'a verileri kaydet
+        db.collection("jobs").addDocument(data: [
+            K.FStore.publisherField: publisher,
+            K.FStore.titleField: title,
+            K.FStore.explanationField: explanation,
+            K.FStore.priceField: price,
+            K.FStore.categoryField: category,
+            K.FStore.cityField: city,
+            K.FStore.imageURLField: imageURL,
+            K.FStore.status: "pending"
+        ]) { (error) in
+            if let e = error {
+                print("There was an issue saving data to Firestore: \(e)")
+            } else {
+                print("Successfully saved data to Firestore")
+                DispatchQueue.main.async {
+                    self.titleTextField.text = ""
+                    self.explanationTextField.text = ""
+                    self.priceTextField.text = ""
+                    self.categoryTextField.text = ""
+                    self.cityTextField.text = ""
+                    self.jobImage.image = UIImage(named: "photo")
+                }
+            }
+        }
+    }
+    
+    // ImageView'a tıklanınca galeriyi açan fonksiyon
+        @objc func imageViewTapped() {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .photoLibrary
+            present(imagePicker, animated: true, completion: nil)
+        }
+
+        // Kullanıcı bir fotoğraf seçtikten sonra çağrılan delegate fonksiyon
+        @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+                jobImage.contentMode = .scaleAspectFit
+                jobImage.image = pickedImage
+            }
+            picker.dismiss(animated: true, completion: nil)
+        }
+    
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "Uyarı", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Tamam", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
     
 }
 

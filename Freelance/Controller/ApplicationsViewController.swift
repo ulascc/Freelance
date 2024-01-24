@@ -63,7 +63,8 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
                             let price = data["price"] as? String ?? ""
                             let publisher = data["publisher"] as? String ?? ""
                             let status = data["status"] as? String ?? ""
-                            return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status)
+                            let imageURLField = data["imageURLField"] as? String ?? "" // Yeni eklenen fotoğraf URL'si alanı
+                            return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status, imageURL: imageURLField)
                         }
 
                         // Verileri kontrol et
@@ -99,6 +100,8 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
         cell.jobPrice.text = "\(job.price) TL"
         cell.jobCity.text = job.city
         cell.jobUid.text = job.uid
+        
+        cell.jobUid.isHidden = true
         
         return cell
     }

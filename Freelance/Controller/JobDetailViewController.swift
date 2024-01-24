@@ -7,9 +7,10 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 
 class JobDetailViewController: UIViewController {
-
+    
     var jobTitle: String?
     var jobExplanation: String?
     var jobPuplisher: String?
@@ -30,10 +31,16 @@ class JobDetailViewController: UIViewController {
     @IBOutlet weak var takeBackApplicationButton: UIButton!
     @IBOutlet weak var jobIsYoursLabel: UILabel!
     
+    @IBOutlet weak var jobImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("job detail secreen")
+        
+        // Gelen jobUid ile Firestore'dan imageURL al ve işlevi çağır
+        if let jobID = jobUid {
+            loadImageFromFirestore(jobID: jobID)
+        }
         
         titleLabel.text = jobTitle
         explanationLabel.text = jobExplanation
@@ -42,23 +49,51 @@ class JobDetailViewController: UIViewController {
         categoryLabel.text = jobCategory
         cityLabel.text = jobCity
         uidLabel.text = jobUid
+        uidLabel.isHidden = true
         
         takeBackApplicationButton.isHidden = true
         jobIsYoursLabel.isHidden = true
         checkIfJobIsYours()
         
         applicationCheck(jobID: jobUid ?? "") { alreadyApplied in
-                if alreadyApplied {
-                    self.takeBackApplicationButton.isHidden = false
-                    self.applyButton.isHidden = true
-                    self.applyButton.isUserInteractionEnabled = false
-                    
-                } else {
-                    self.takeBackApplicationButton.isHidden = true
-                }
+            if alreadyApplied {
+                self.takeBackApplicationButton.isHidden = false
+                self.applyButton.isHidden = true
+                self.applyButton.isUserInteractionEnabled = false
+                
+            } else {
+                self.takeBackApplicationButton.isHidden = true
             }
+        }
         
         //checkApplicationStatus()
+    }
+    
+    func loadImageFromFirestore(jobID: String) {
+        let jobsCollection = Firestore.firestore().collection("jobs")
+        jobsCollection.document(jobID).getDocument { (document, error) in
+            if let error = error {
+                print("Error fetching job details: \(error.localizedDescription)")
+                return
+            }
+            
+            if let document = document, document.exists {
+                // Fetch imageURL from Firestore
+                if let imageURL = document["imageURLField"] as? String {
+                    // Load image asynchronously using URLSession
+                    if let url = URL(string: imageURL) {
+                        URLSession.shared.dataTask(with: url) { (data, response, error) in
+                            if let data = data {
+                                DispatchQueue.main.async {
+                                    // Set the image on the main thread
+                                    self.jobImage.image = UIImage(data: data)
+                                }
+                            }
+                        }.resume()
+                    }
+                }
+            }
+        }
     }
     
     @IBAction func applyButton(_ sender: UIButton) {
@@ -120,7 +155,7 @@ class JobDetailViewController: UIViewController {
             }
         }
     }
-
+    
     
     func applicationCheck(jobID: String, completionHandler: @escaping (Bool) -> Void) {
         // Firestore koleksiyonunu oluştur
@@ -159,19 +194,19 @@ class JobDetailViewController: UIViewController {
               let currentUserEmail = currentUser.email,
               let jobID = jobUid,
               let publisherEmail = jobPuplisher else {
-                  print("User information is not available.")
-                  return
+            print("User information is not available.")
+            return
         }
-
+        
         // Firestore koleksiyonunu oluştur
         let applicationsCollection = Firestore.firestore().collection("applications")
-
+        
         // Başvuruyu geri almak için filtreleme yap
         let query = applicationsCollection
             .whereField("applicantEmail", isEqualTo: currentUserEmail)
             .whereField("jobID", isEqualTo: jobID)
             .whereField("publisherEmail", isEqualTo: publisherEmail)
-
+        
         // Başvuruları getir
         query.getDocuments { (snapshot, error) in
             if let error = error {
@@ -210,25 +245,25 @@ class JobDetailViewController: UIViewController {
               let currentUserEmail = currentUser.email,
               let jobID = jobUid,
               let publisherEmail = jobPuplisher else {
-                  print("User information is not available.")
-                  return
+            print("User information is not available.")
+            return
         }
-
+        
         // Firestore koleksiyonunu oluştur
         let applicationsCollection = Firestore.firestore().collection("applications")
-
+        
         // Başvuruyu geri almak için filtreleme yap
         let query = applicationsCollection
             .whereField("applicantEmail", isEqualTo: currentUserEmail)
             .whereField("jobID", isEqualTo: jobID)
             .whereField("publisherEmail", isEqualTo: publisherEmail)
-
+        
         query.getDocuments { (snapshot, error) in
             if let error = error {
                 print("Error checking application status: \(error.localizedDescription)")
                 return
             }
-
+            
             // Başvuru varsa
             if let documents = snapshot?.documents, !documents.isEmpty {
                 self.takeBackApplicationButton.isHidden = false
@@ -240,13 +275,13 @@ class JobDetailViewController: UIViewController {
             }
         }
     }
-
+    
     
     func selfCheck() -> Bool {
         if let currentUser = Auth.auth().currentUser,
-            let currentUserEmail = currentUser.email,
-            let publisherEmail = self.jobPuplisher,
-            currentUserEmail == publisherEmail {
+           let currentUserEmail = currentUser.email,
+           let publisherEmail = self.jobPuplisher,
+           currentUserEmail == publisherEmail {
             // Kullanıcı kendi ilanına başvuruyorsa uyarı mesajını göster
             let alertController = UIAlertController(title: "Hata", message: "Kendi ilanınıza başvuruda bulunamazsınız.", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Tamam", style: .default, handler: nil))
@@ -258,17 +293,17 @@ class JobDetailViewController: UIViewController {
     
     
     func checkIfJobIsYours() {
-            if let currentUser = Auth.auth().currentUser,
-               let currentUserEmail = currentUser.email,
-               let jobId = self.jobUid {
-                
-                // Firestore koleksiyonunu referans al
-                let givenJobsCollection = Firestore.firestore().collection("givenJobs")
-                
-                // Veritabanında eşleşen dökümanları kontrol et
-                givenJobsCollection.whereField("applicantEmail", isEqualTo: currentUserEmail)
-                                  .whereField("jobUid", isEqualTo: jobId) // uidLabel.text değeri ile kontrol edildi
-                                  .getDocuments { (snapshot, error) in
+        if let currentUser = Auth.auth().currentUser,
+           let currentUserEmail = currentUser.email,
+           let jobId = self.jobUid {
+            
+            // Firestore koleksiyonunu referans al
+            let givenJobsCollection = Firestore.firestore().collection("givenJobs")
+            
+            // Veritabanında eşleşen dökümanları kontrol et
+            givenJobsCollection.whereField("applicantEmail", isEqualTo: currentUserEmail)
+                .whereField("jobUid", isEqualTo: jobId) // uidLabel.text değeri ile kontrol edildi
+                .getDocuments { (snapshot, error) in
                     if let error = error {
                         print("Error checking given jobs: \(error.localizedDescription)")
                     } else if let snapshot = snapshot, !snapshot.documents.isEmpty {
@@ -276,10 +311,8 @@ class JobDetailViewController: UIViewController {
                         self.jobIsYoursLabel.isHidden = false
                     }
                 }
-            }
         }
-    
-    
+    }
 }
 
 

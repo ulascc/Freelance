@@ -82,9 +82,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         let price = data["price"] as? String ?? ""
                         let publisher = data["publisher"] as? String ?? ""
                         let status = data["status"] as? String ?? ""
-                        return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status)
+                        let imageURLField = data["imageURLField"] as? String ?? "" // Yeni eklenen fotoğraf URL'si alanı
+                        return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status, imageURL: imageURLField)
                     }
-                    
                     // Verileri kontrol et
                     print("Jobs Dizisi: \(self.jobs)")
                     
@@ -154,7 +154,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         let price = data["price"] as? String ?? ""
                         let publisher = data["publisher"] as? String ?? ""
                         let status = data["status"] as? String ?? ""
-                        return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status)
+                        let imageURLField = data["imageURLField"] as? String ?? "" // Yeni eklenen fotoğraf URL'si alanı
+                        return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status, imageURL: imageURLField)
                     }
                     self.jobsTableView.reloadData()
                 }
@@ -180,6 +181,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.jobPrice.text = "\(job.price) TL"
         cell.jobCity.text = job.city
         cell.jobUid.text = job.uid
+        
+        cell.jobUid.isHidden = true
         
         cell.selectionStyle = .none
         
@@ -271,7 +274,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         let price = data["price"] as? String ?? ""
                         let publisher = data["publisher"] as? String ?? ""
                         let status = data["status"] as? String ?? ""
-                        return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status)
+                        let imageURLField = data["imageURLField"] as? String ?? "" // Yeni eklenen fotoğraf URL'si alanı
+                        return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status, imageURL: imageURLField)
                     }
                     self.jobsTableView.reloadData()
                 }

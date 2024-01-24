@@ -21,6 +21,7 @@ struct K{
         static let categoryField = "category"
         static let cityField = "city"
         static let dateField = "date"
+        static let imageURLField = "imageURLField"
     }
 }
 

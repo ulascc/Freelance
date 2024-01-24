@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 
 class ApplicationDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -36,6 +37,9 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
     @IBOutlet weak var uidLabel: UILabel!
     @IBOutlet weak var informationLabel: UILabel!
     
+    
+    @IBOutlet weak var jobImage: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,6 +66,37 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
         
         fetchApplicants()
         
+        // Gelen jobUid ile Firestore'dan imageURL al ve işlevi çağır
+        if let jobID = jobUid {
+            loadImageFromFirestore(jobID: jobID)
+        }
+    }
+    
+    func loadImageFromFirestore(jobID: String) {
+        let jobsCollection = Firestore.firestore().collection("jobs")
+        jobsCollection.document(jobID).getDocument { (document, error) in
+            if let error = error {
+                print("Error fetching job details: \(error.localizedDescription)")
+                return
+            }
+            
+            if let document = document, document.exists {
+                // Fetch imageURL from Firestore
+                if let imageURL = document["imageURLField"] as? String {
+                    // Load image asynchronously using URLSession
+                    if let url = URL(string: imageURL) {
+                        URLSession.shared.dataTask(with: url) { (data, response, error) in
+                            if let data = data {
+                                DispatchQueue.main.async {
+                                    // Set the image on the main thread
+                                    self.jobImage.image = UIImage(data: data)
+                                }
+                            }
+                        }.resume()
+                    }
+                }
+            }
+        }
     }
     
     @objc func refreshData() {

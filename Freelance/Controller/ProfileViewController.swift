@@ -9,6 +9,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var aboutLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var phoneNumberLabel: UILabel!
+    @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
 
     let db = Firestore.firestore()
@@ -34,6 +35,7 @@ class ProfileViewController: UIViewController {
                     self.aboutLabel.text = userData["about"] as? String
                     self.emailLabel.text = userData["email"] as? String
                     self.phoneNumberLabel.text = userData["phoneNumber"] as? String
+                    self.cityLabel.text = userData["city"] as? String
 
                     // Profil fotoğrafını göstermek için Storage'dan URL al ve yükle
                     if let profileImageUrl = userData["profileImageUrl"] as? String {

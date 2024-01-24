@@ -8,5 +8,5 @@
 import Foundation
 
 struct Categories {
-    static let categories = ["IT", "electrical", "home made", "car", "another"]
+    static let categories = ["IT", "electrical", "mechanical", "home plumbing","private lesson", "sport", "health and medicine", "logistics", "tourism", "houseworks", "service", "law", "photography","translator", "employee"]
 }

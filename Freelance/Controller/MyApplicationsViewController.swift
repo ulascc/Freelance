@@ -4,7 +4,8 @@ import Firebase
 class MyApplicationsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
 
     @IBOutlet weak var myApplicationsTableView: UITableView!
-
+    @IBOutlet weak var appliedJobIsEmptyLabel: UILabel!
+    
     var jobs: [Job] = []
     var refreshControl = UIRefreshControl()
 
@@ -88,6 +89,11 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if jobs.isEmpty {
+            appliedJobIsEmptyLabel.isHidden = false
+        } else {
+            appliedJobIsEmptyLabel.isHidden = true
+        }
         return jobs.count
     }
     

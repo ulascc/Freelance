@@ -12,6 +12,8 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
 
     @IBOutlet weak var applicationsTableView: UITableView!
 
+    @IBOutlet weak var applicationsIsEmptyLabel: UILabel!
+    
     var jobs: [Job] = []
     var refreshControl = UIRefreshControl()
     
@@ -91,6 +93,11 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: - TableView DataSource Methods
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if jobs.isEmpty {
+            applicationsIsEmptyLabel.isHidden = false
+        } else {
+            applicationsIsEmptyLabel.isHidden = true
+        }
         return jobs.count
     }
 

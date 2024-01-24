@@ -138,7 +138,7 @@ class AddJobViewController: UIViewController, UIImagePickerControllerDelegate, U
                     self.priceTextField.text = ""
                     self.categoryTextField.text = ""
                     self.cityTextField.text = ""
-                    self.jobImage.image = UIImage(named: "photo")
+                    self.jobImage.image = UIImage(systemName: "photo")
                 }
             }
         }

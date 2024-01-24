@@ -2,7 +2,7 @@
 //  WelcomViewController.swift
 //  Freelance
 //
-//  Created by umutcancicek on 7.11.2023.
+//  Created by ulascancicek on 7.11.2023.
 //
 
 import Foundation
@@ -15,5 +15,5 @@ class WelcomeViewController: UIViewController {
         super.viewDidLoad()
         print("hello world")
     }
-
+    
 }

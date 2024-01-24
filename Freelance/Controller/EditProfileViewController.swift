@@ -3,7 +3,7 @@ import Firebase
 import FirebaseFirestore
 
 class EditProfileViewController: UIViewController {
-
+    
     var fullName: String?
     var phoneNumber: String?
     var city: String?

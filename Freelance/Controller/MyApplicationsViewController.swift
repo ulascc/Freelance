@@ -2,20 +2,20 @@ import UIKit
 import Firebase
 
 class MyApplicationsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
-
+    
     @IBOutlet weak var myApplicationsTableView: UITableView!
     @IBOutlet weak var appliedJobIsEmptyLabel: UILabel!
     
     var jobs: [Job] = []
     var refreshControl = UIRefreshControl()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         myApplicationsTableView.dataSource = self
         myApplicationsTableView.delegate = self
         myApplicationsTableView.register(UINib(nibName: "JobCell", bundle: nil), forCellReuseIdentifier: "JobCell")
-
+        
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         myApplicationsTableView.addSubview(refreshControl)
         
@@ -26,17 +26,17 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
         // Firestore'dan verileri çekin
         fetchMyApplicants()
     }
-
+    
     func fetchMyApplicants() {
         if let currentUser = Auth.auth().currentUser {
             let userEmail = currentUser.email ?? ""
-
+            
             // Firestore referansını al
             let db = Firestore.firestore()
-
+            
             // "applications" koleksiyonunu referans al
             let applicationsRef = db.collection("applications")
-
+            
             // Kullanıcının e-posta adresine göre sorgu yap
             applicationsRef.whereField("applicantEmail", isEqualTo: userEmail).getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -45,10 +45,10 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
                     // Sorgu sonuçları
                     for document in querySnapshot!.documents {
                         let data = document.data()
-
+                        
                         // İlgili verileri kullanarak işlemleri gerçekleştir (örneğin, yazdır)
                         print("Document ID: \(document.documentID), Data: \(data)")
-
+                        
                         // JobID'yi al
                         if let jobID = data["jobID"] as? String {
                             // Jobs koleksiyonundan ilgili jobID'ye sahip dokümanı al
@@ -59,7 +59,7 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
                                 } else if let jobData = jobDocument?.data() {
                                     // İlgili işin detaylarına ulaş
                                     print("Job Details for Job ID \(jobID): \(jobData)")
-
+                                    
                                     // Job modelini oluştur ve jobs dizisine ekle
                                     let job = Job(
                                         publisher: jobData["publisher"] as? String ?? "",
@@ -72,9 +72,9 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
                                         status: jobData["status"] as? String ?? "",
                                         imageURL: jobData["imageURLField"] as? String ?? ""
                                     )
-
+                                    
                                     self.jobs.append(job)
-
+                                    
                                     // TableView'ı güncelle
                                     DispatchQueue.main.async {
                                         self.myApplicationsTableView.reloadData()
@@ -87,7 +87,7 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
             }
         }
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if jobs.isEmpty {
             appliedJobIsEmptyLabel.isHidden = false
@@ -97,10 +97,10 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
         return jobs.count
     }
     
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "JobCell", for: indexPath) as! JobCell
-
+        
         
         let job = jobs[indexPath.row]
         cell.jobTitle.text = job.title
@@ -110,7 +110,7 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
         cell.jobUid.text = job.uid
         
         cell.jobUid.isHidden = true
-
+        
         return cell
     }
     
@@ -125,7 +125,7 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 130.0 
+        return 130.0
     }
     
     
@@ -137,26 +137,26 @@ class MyApplicationsViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "myApplicationsDetailSegue" {
-                // Hedef view controller'ı alın
-                if let destinationVC = segue.destination as? JobDetailViewController {
-                    // IndexPath'ten seçilen işi alın
-                    if let selectedRow = sender as? Int {
-                        // Seçilen işi JobDetailViewController'a iletmek için gerekli bilgileri alın
-                        let selectedJob = jobs[selectedRow]
-                        print("Selected Job: \(selectedJob)")
-
-                        // JobDetailViewController'ın IBOutlet'lerine değerleri atayın
-                        destinationVC.jobTitle = selectedJob.title
-                        destinationVC.jobExplanation = selectedJob.explanation
-                        destinationVC.jobPuplisher = selectedJob.publisher
-                        destinationVC.jobPrice = "\(selectedJob.price) TL"
-                        destinationVC.jobCategory = selectedJob.category
-                        destinationVC.jobCity = selectedJob.city
-                        destinationVC.jobUid = selectedJob.uid
-                    }
+        if segue.identifier == "myApplicationsDetailSegue" {
+            // Hedef view controller'ı alın
+            if let destinationVC = segue.destination as? JobDetailViewController {
+                // IndexPath'ten seçilen işi alın
+                if let selectedRow = sender as? Int {
+                    // Seçilen işi JobDetailViewController'a iletmek için gerekli bilgileri alın
+                    let selectedJob = jobs[selectedRow]
+                    print("Selected Job: \(selectedJob)")
+                    
+                    // JobDetailViewController'ın IBOutlet'lerine değerleri atayın
+                    destinationVC.jobTitle = selectedJob.title
+                    destinationVC.jobExplanation = selectedJob.explanation
+                    destinationVC.jobPuplisher = selectedJob.publisher
+                    destinationVC.jobPrice = "\(selectedJob.price) TL"
+                    destinationVC.jobCategory = selectedJob.category
+                    destinationVC.jobCity = selectedJob.city
+                    destinationVC.jobUid = selectedJob.uid
                 }
             }
         }
+    }
     
 }

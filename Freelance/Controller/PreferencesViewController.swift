@@ -2,7 +2,7 @@
 //  PreferencesViewController.swift
 //  Freelance
 //
-//  Created by umutcancicek on 24.01.2024.
+//  Created by ulascancicek on 24.01.2024.
 //
 
 import UIKit

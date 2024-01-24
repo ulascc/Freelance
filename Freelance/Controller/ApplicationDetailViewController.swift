@@ -2,7 +2,7 @@
 //  ApplicationDetailViewController.swift
 //  Freelance
 //
-//  Created by umutcancicek on 24.12.2023.
+//  Created by ulascancicek on 24.12.2023.
 //
 
 import UIKit
@@ -113,7 +113,7 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
             }
         }
     }
-
+    
     
     
     
@@ -160,32 +160,32 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
         let jobsCollection = db.collection("jobs")
         let givenJobsCollection = db.collection("givenJobs")
         let applicationsCollection = db.collection("applications")
-
+        
         print("Fetching job...")
-
+        
         // Jobs koleksiyonundan belirli bir dokümanı çek
         jobsCollection.document(jobID).getDocument { [weak self] (jobDocument, jobsError) in
             guard let self = self else { return }
-
+            
             if let jobsError = jobsError {
                 print("Error fetching job: \(jobsError.localizedDescription)")
             } else {
                 if let jobData = jobDocument?.data(),
                    let jobStatus = jobData["status"] as? String {
                     print("Job Status: \(jobStatus)")
-
+                    
                     // Jobs koleksiyonundan alınan jobStatus'a göre işlem yap
                     if jobStatus == "pending" {
                         print("Fetching applications...")
-
+                        
                         isJobGiven = false
                         
                         // JobStatus "pending" ise, Applications koleksiyonundan tüm verileri al
                         let query = applicationsCollection.whereField("jobID", isEqualTo: jobID)
-
+                        
                         query.getDocuments { [weak self] (snapshot, error) in
                             guard let self = self else { return }
-
+                            
                             if let error = error {
                                 print("Error fetching applications: \(error.localizedDescription)")
                             } else {
@@ -195,9 +195,9 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
                                         let applicantEmail = data["applicantEmail"] as? String ?? ""
                                         return Applicant(applicantEmail: applicantEmail)
                                     }
-
+                                    
                                     print("Fetched \(self.applicants.count) applicants")
-
+                                    
                                     // TableView'ı ana thread üzerinde güncelle
                                     DispatchQueue.main.async {
                                         self.applicantsTableView.reloadData()
@@ -211,7 +211,7 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
                         // JobStatus "taken" ise, GivenJobs koleksiyonundan veriyi al
                         givenJobsCollection.whereField("jobUid", isEqualTo: jobID).getDocuments { [weak self] (givenJobsSnapshot, givenJobsError) in
                             guard let self = self else { return }
-
+                            
                             isJobGiven = true
                             
                             if let givenJobsError = givenJobsError {
@@ -224,9 +224,9 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
                                         let applicantEmail = givenJobsData["applicantEmail"] as? String ?? ""
                                         return Applicant(applicantEmail: applicantEmail)
                                     }
-
+                                    
                                     print("Fetched \(self.applicants.count) applicants")
-
+                                    
                                     // TableView'ı ana thread üzerinde güncelle
                                     DispatchQueue.main.async {
                                         self.applicantsTableView.reloadData()
@@ -289,20 +289,20 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EditJobSegue" {
-                    if let destinationVC = segue.destination as? EditJobViewController {
-                        // Verileri güvenli bir şekilde atamak için nil kontrolü yapın
-                        destinationVC.jobTitle = titleLabel.text ?? ""
-                        destinationVC.explanation = explanationLabel.text ?? ""
-                        destinationVC.category = categoryLabel.text ?? ""
-                        destinationVC.city = cityLabel.text ?? ""
-                        destinationVC.price = priceLabel.text ?? ""
-                        destinationVC.jobID = uidLabel.text ?? ""
-                    }
-                } else if segue.identifier == "showApplicantProfile", let email = sender as? String {
-                    if let destinationVC = segue.destination as? ApplicantProfieViewController {
-                        // Segue ile ProfileViewController'a giderken e-posta bilgisini aktar
-                        destinationVC.selectedUserEmail = email
-                    }
-                }
+            if let destinationVC = segue.destination as? EditJobViewController {
+                // Verileri güvenli bir şekilde atamak için nil kontrolü yapın
+                destinationVC.jobTitle = titleLabel.text ?? ""
+                destinationVC.explanation = explanationLabel.text ?? ""
+                destinationVC.category = categoryLabel.text ?? ""
+                destinationVC.city = cityLabel.text ?? ""
+                destinationVC.price = priceLabel.text ?? ""
+                destinationVC.jobID = uidLabel.text ?? ""
+            }
+        } else if segue.identifier == "showApplicantProfile", let email = sender as? String {
+            if let destinationVC = segue.destination as? ApplicantProfieViewController {
+                // Segue ile ProfileViewController'a giderken e-posta bilgisini aktar
+                destinationVC.selectedUserEmail = email
+            }
+        }
     }
 }

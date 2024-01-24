@@ -2,7 +2,7 @@
 //  AddJobViewController.swift
 //  Freelance
 //
-//  Created by umutcancicek on 8.11.2023.
+//  Created by ulascancicek on 8.11.2023.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import Firebase
 import FirebaseStorage
 
 class AddJobViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var explanationTextField: UITextField!
@@ -26,12 +26,12 @@ class AddJobViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     let categories = Categories.categories
     let cities = Cities.cities
-
+    
     let db = Firestore.firestore()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+        
         titleTextField.autocorrectionType = .no
         explanationTextField.autocorrectionType = .no
         priceTextField.autocorrectionType = .no
@@ -52,9 +52,9 @@ class AddJobViewController: UIViewController, UIImagePickerControllerDelegate, U
         cityPickerView.tag = 2
         
         // UITapGestureRecognizer ekleyerek imageView'a tıklama olayını dinle
-                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
-                jobImage.addGestureRecognizer(tapGesture)
-                jobImage.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
+        jobImage.addGestureRecognizer(tapGesture)
+        jobImage.isUserInteractionEnabled = true
     }
     
     
@@ -66,11 +66,11 @@ class AddJobViewController: UIViewController, UIImagePickerControllerDelegate, U
               let city = cityTextField.text, !city.isEmpty,
               let publisher = Auth.auth().currentUser?.email,
               let jobImage = jobImage.image else {
-                // Eğer herhangi bir değer boşsa hata mesajı göster
-                showAlert(message: "Lütfen tüm alanları doldurun.")
-                return
+            // Eğer herhangi bir değer boşsa hata mesajı göster
+            showAlert(message: "Lütfen tüm alanları doldurun.")
+            return
         }
-
+        
         // Resmi Firebase Storage'a yükle
         uploadImageToFirebaseStorage(image: jobImage) { (imageURL) in
             // Resmin yüklendiği Storage URL'ini aldıktan sonra Firestore'a kaydet
@@ -86,7 +86,7 @@ class AddJobViewController: UIViewController, UIImagePickerControllerDelegate, U
             
             // jobImage'i boş yap
             self.jobImage.image = UIImage(named: "photo")
-
+            
             // Kayıt başarılı alert'i göster
             self.showAlert(message: "İş ilanı başarıyla yayınlandı.")
         }
@@ -95,10 +95,10 @@ class AddJobViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     func uploadImageToFirebaseStorage(image: UIImage, completion: @escaping (String) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
-
+        
         let imageID = UUID().uuidString
         let storageRef = Storage.storage().reference().child("job_images/\(imageID).jpg")
-
+        
         storageRef.putData(imageData, metadata: nil) { (metadata, error) in
             if let error = error {
                 print("Error uploading image to Firebase Storage: \(error)")
@@ -145,21 +145,21 @@ class AddJobViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     // ImageView'a tıklanınca galeriyi açan fonksiyon
-        @objc func imageViewTapped() {
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.sourceType = .photoLibrary
-            present(imagePicker, animated: true, completion: nil)
+    @objc func imageViewTapped() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    // Kullanıcı bir fotoğraf seçtikten sonra çağrılan delegate fonksiyon
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            jobImage.contentMode = .scaleAspectFit
+            jobImage.image = pickedImage
         }
-
-        // Kullanıcı bir fotoğraf seçtikten sonra çağrılan delegate fonksiyon
-        @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                jobImage.contentMode = .scaleAspectFit
-                jobImage.image = pickedImage
-            }
-            picker.dismiss(animated: true, completion: nil)
-        }
+        picker.dismiss(animated: true, completion: nil)
+    }
     
     func showAlert(message: String) {
         let alert = UIAlertController(title: "Uyarı", message: message, preferredStyle: .alert)

@@ -2,7 +2,7 @@
 //  EditJobViewController.swift
 //  Freelance
 //
-//  Created by umutcancicek on 24.01.2024.
+//  Created by ulascancicek on 24.01.2024.
 //
 
 import UIKit
@@ -50,10 +50,10 @@ class EditJobViewController: UIViewController {
             // Gerekli değerler boşsa işlem yapma
             return
         }
-
+        
         let db = Firestore.firestore()
         let jobsCollection = db.collection("jobs")
-
+        
         // Jobs koleksiyonunda belirli bir işi güncelle
         jobsCollection.document(jobID).updateData([
             "title": title,
@@ -80,21 +80,21 @@ class EditJobViewController: UIViewController {
             }
         }
     }
-
+    
     
     @IBAction func DeleteJobButtonPressed(_ sender: UIButton) {
         // UIAlertController oluştur
         let alertController = UIAlertController(title: "Confirm Deletion", message: "Are you sure you want to delete this job?", preferredStyle: .alert)
-
+        
         // Evet butonu ekle
         let yesAction = UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
             guard let self = self else { return }
-
+            
             // Silme işlemi
             if let jobID = self.jobIDLabel.text {
                 let db = Firestore.firestore()
                 let jobsCollection = db.collection("jobs")
-
+                
                 jobsCollection.document(jobID).delete { (error) in
                     if let error = error {
                         // Hata durumunda UIAlertController kullanarak alert göster
@@ -115,14 +115,14 @@ class EditJobViewController: UIViewController {
                 }
             }
         }
-
+        
         // Hayır butonu ekle
         let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
-
+        
         // Butonları UIAlertController'a ekle
         alertController.addAction(yesAction)
         alertController.addAction(noAction)
-
+        
         // UIAlertController'ı göster
         present(alertController, animated: true, completion: nil)
     }

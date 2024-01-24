@@ -2,7 +2,7 @@
 //  applicationsViewController.swift
 //  Freelance
 //
-//  Created by umutcancicek on 23.12.2023. ?
+//  Created by ulascancicek on 23.12.2023. ?
 //
 
 
@@ -169,7 +169,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
-
+    
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

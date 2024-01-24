@@ -4,7 +4,7 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var fullNameTextField: UITextField!
@@ -38,8 +38,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     let db = Firestore.firestore()
     let storage = Storage.storage()
-
-
+    
+    
     @objc func handleImageTap() {
         // Fotoğraf seçme işlemi için UIImagePickerController'ı başlat
         let imagePicker = UIImagePickerController()
@@ -48,20 +48,20 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
     }
-
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[.editedImage] as? UIImage {
             // Seçilen fotoğrafı ImageView'da göster
             profileImageView.image = pickedImage
         }
-
+        
         dismiss(animated: true, completion: nil)
     }
-
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
-
+    
     @IBAction func RegisterButtonPressed(_ sender: UIButton) {
         guard let email = emailTextField.text, !email.isEmpty,
               let password = passwordTextField.text, !password.isEmpty,
@@ -69,11 +69,11 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
               let about = aboutTextField.text, !about.isEmpty,
               let phoneNumber = phoneNumberTextField.text, !phoneNumber.isEmpty,
               let city = cityTextField.text, !city.isEmpty else {
-                // Giriş alanlarından biri boşsa hata mesajı göster
-                showAlert(title: "Hata", message: "Tüm alanları doldurmalısınız.")
-                return
+            // Giriş alanlarından biri boşsa hata mesajı göster
+            showAlert(title: "Hata", message: "Tüm alanları doldurmalısınız.")
+            return
         }
-
+        
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let error = error {
                 print("Error creating user: \(error.localizedDescription)")
@@ -85,12 +85,12 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             }
         }
     }
-
-
+    
+    
     func saveUserToFirestore(_ user: User, fullName: String, email: String, about: String, phoneNumber: String, city: String) {
         let db = Firestore.firestore()
         let userRef = db.collection("users").document(user.uid)
-
+        
         let userData: [String: Any] = [
             "fullName": fullName,
             "email": email,
@@ -99,7 +99,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             "phoneNumber": phoneNumber,
             "city": city
         ]
-
+        
         userRef.setData(userData, merge: true) { error in
             if let error = error {
                 print("Firestore'ya kullanıcı bilgilerini eklerken hata oluştu: \(error.localizedDescription)")
@@ -118,14 +118,14 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             }
         }
     }
-
-
+    
+    
     func uploadProfileImage(for user: User) {
         if let profileImage = self.profileImageView.image,
            let imageData = profileImage.jpegData(compressionQuality: 0.5) {
             
             let storageRef = Storage.storage().reference().child("profile_images").child("\(user.uid).jpg")
-
+            
             storageRef.putData(imageData, metadata: nil) { (metadata, error) in
                 if let error = error {
                     print("Error uploading profile image: \(error.localizedDescription)")
@@ -143,15 +143,15 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             }
         }
     }
-
+    
     func saveProfileImageURL(_ user: User, downloadURL: String) {
         let db = Firestore.firestore()
         let userRef = db.collection("users").document(user.uid)
-
+        
         let userData: [String: Any] = [
             "profileImageUrl": downloadURL
         ]
-
+        
         userRef.setData(userData, merge: true) { error in
             if let error = error {
                 print("Firestore'ya profil fotoğraf URL'sini eklerken hata oluştu: \(error.localizedDescription)")
@@ -167,7 +167,7 @@ extension RegisterViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch pickerView {
         case cityPickerView:
@@ -176,7 +176,7 @@ extension RegisterViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             return 1
         }
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch pickerView {
         case cityPickerView:
@@ -185,7 +185,7 @@ extension RegisterViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             return "data not found"
         }
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch pickerView {
         case cityPickerView:

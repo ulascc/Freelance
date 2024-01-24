@@ -2,16 +2,16 @@
 //  applicationsViewController.swift
 //  Freelance
 //
-//  Created by umutcancicek on 23.12.2023.
+//  Created by ulascancicek on 23.12.2023.
 //
 
 import UIKit
 import Firebase
 
 class ApplicationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
-
+    
     @IBOutlet weak var applicationsTableView: UITableView!
-
+    
     @IBOutlet weak var applicationsIsEmptyLabel: UILabel!
     
     var jobs: [Job] = []
@@ -24,7 +24,7 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
         applicationsTableView.delegate = self
         applicationsTableView.dataSource = self
         applicationsTableView.register(UINib(nibName: "JobCell", bundle: nil), forCellReuseIdentifier: "JobCell")
-
+        
         
         // UIRefreshControl ekleyin
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
@@ -50,10 +50,10 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
             let userEmail = currentUser.email ?? ""
             
             let db = Firestore.firestore()
-
+            
             db.collection("jobs").whereField("publisher", isEqualTo: userEmail).getDocuments { [weak self] (snapshot, error) in
                 guard let self = self else { return }
-
+                
                 if let error = error {
                     print("Veri çekme hatası: \(error.localizedDescription)")
                     // Kullanıcıya hata mesajı gösterme veya başka bir işlem yapma
@@ -73,10 +73,10 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
                             let imageURLField = data["imageURLField"] as? String ?? "" // Yeni eklenen fotoğraf URL'si alanı
                             return Job(publisher: publisher, title: title, explanation: explanation, price: price, category: category, city: city, uid: documentID, status: status, imageURL: imageURLField)
                         }
-
+                        
                         // Verileri kontrol et
                         print("Jobs Dizisi: \(self.jobs)")
-
+                        
                         // TableView'ı güncelle
                         self.applicationsTableView.reloadData()
                     }
@@ -86,12 +86,12 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
     }
-
     
     
-
+    
+    
     // MARK: - TableView DataSource Methods
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if jobs.isEmpty {
             applicationsIsEmptyLabel.isHidden = false
@@ -100,7 +100,7 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
         }
         return jobs.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "JobCell", for: indexPath) as! JobCell
         
@@ -139,27 +139,27 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "ApplicationDetailSegue" {
-                // Hedef view controller'ı alın
-                if let destinationVC = segue.destination as? ApplicationDetailViewController {
-                    // IndexPath'ten seçilen işi alın
-                    if let selectedRow = sender as? Int {
-                        // Seçilen işi JobDetailViewController'a iletmek için gerekli bilgileri alın
-                        let selectedJob = jobs[selectedRow]
-                        print("Selected Job: \(selectedJob)")
-
-                        // JobDetailViewController'ın IBOutlet'lerine değerleri atayın
-                        destinationVC.jobTitle = selectedJob.title
-                        destinationVC.jobExplanation = selectedJob.explanation
-                        destinationVC.jobPuplisher = selectedJob.publisher
-                        destinationVC.jobPrice = "\(selectedJob.price) TL"
-                        destinationVC.jobCategory = selectedJob.category
-                        destinationVC.jobCity = selectedJob.city
-                        destinationVC.jobUid = selectedJob.uid
-                    }
+        if segue.identifier == "ApplicationDetailSegue" {
+            // Hedef view controller'ı alın
+            if let destinationVC = segue.destination as? ApplicationDetailViewController {
+                // IndexPath'ten seçilen işi alın
+                if let selectedRow = sender as? Int {
+                    // Seçilen işi JobDetailViewController'a iletmek için gerekli bilgileri alın
+                    let selectedJob = jobs[selectedRow]
+                    print("Selected Job: \(selectedJob)")
+                    
+                    // JobDetailViewController'ın IBOutlet'lerine değerleri atayın
+                    destinationVC.jobTitle = selectedJob.title
+                    destinationVC.jobExplanation = selectedJob.explanation
+                    destinationVC.jobPuplisher = selectedJob.publisher
+                    destinationVC.jobPrice = "\(selectedJob.price) TL"
+                    destinationVC.jobCategory = selectedJob.category
+                    destinationVC.jobCity = selectedJob.city
+                    destinationVC.jobUid = selectedJob.uid
                 }
             }
         }
+    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Yatay kaydırmayı kontrol et

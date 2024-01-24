@@ -2,7 +2,7 @@
 //  JobDetailViewController.swift
 //  Freelance
 //
-//  Created by umutcancicek on 14.12.2023.
+//  Created by ulascancicek on 14.12.2023.
 //
 
 import UIKit

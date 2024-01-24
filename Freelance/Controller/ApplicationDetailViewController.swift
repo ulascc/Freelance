@@ -72,6 +72,51 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Eğer bir iş güncellendiyse, güncellenmiş verileri al ve görüntüle
+        if let updatedJobID = jobUid {
+            fetchJobDetails(jobUid: updatedJobID)
+        }
+    }
+    
+    func fetchJobDetails(jobUid: String) {
+        let db = Firestore.firestore()
+        let jobsCollection = db.collection("jobs")
+        
+        // Jobs koleksiyonunda belirli bir işi çek
+        jobsCollection.document(jobUid).getDocument { [weak self] (document, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Error fetching job details: \(error.localizedDescription)")
+                return
+            }
+            
+            if let document = document, document.exists {
+                // Verileri güncelle
+                self.jobTitle = document["title"] as? String
+                self.jobExplanation = document["explanation"] as? String
+                self.jobPuplisher = document["puplisher"] as? String
+                self.jobPrice = document["price"] as? String
+                self.jobCategory = document["category"] as? String
+                self.jobCity = document["city"] as? String
+                
+                // Güncellenmiş verileri görüntüle
+                self.titleLabel.text = self.jobTitle
+                self.explanationLabel.text = self.jobExplanation
+                self.priceLabel.text = self.jobPrice
+                self.categoryLabel.text = self.jobCategory
+                self.cityLabel.text = self.jobCity
+                self.cityLabel.text = self.jobCity
+            }
+        }
+    }
+
+    
+    
+    
     func loadImageFromFirestore(jobID: String) {
         let jobsCollection = Firestore.firestore().collection("jobs")
         jobsCollection.document(jobID).getDocument { (document, error) in
@@ -194,7 +239,12 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
             }
         }
     }
-
+    
+    
+    @IBAction func EditJobButtonPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "EditJobSegue", sender: self)
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         informationLabel.isHidden = applicants.count != 0
@@ -238,11 +288,21 @@ class ApplicationDetailViewController: UIViewController, UITableViewDataSource, 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showApplicantProfile", let email = sender as? String {
-            if let destinationVC = segue.destination as? ApplicantProfieViewController {
-                // Segue ile ProfileViewController'a giderken e-posta bilgisini aktar
-                destinationVC.selectedUserEmail = email
-            }
-        }
+        if segue.identifier == "EditJobSegue" {
+                    if let destinationVC = segue.destination as? EditJobViewController {
+                        // Verileri güvenli bir şekilde atamak için nil kontrolü yapın
+                        destinationVC.jobTitle = titleLabel.text ?? ""
+                        destinationVC.explanation = explanationLabel.text ?? ""
+                        destinationVC.category = categoryLabel.text ?? ""
+                        destinationVC.city = cityLabel.text ?? ""
+                        destinationVC.price = priceLabel.text ?? ""
+                        destinationVC.jobID = uidLabel.text ?? ""
+                    }
+                } else if segue.identifier == "showApplicantProfile", let email = sender as? String {
+                    if let destinationVC = segue.destination as? ApplicantProfieViewController {
+                        // Segue ile ProfileViewController'a giderken e-posta bilgisini aktar
+                        destinationVC.selectedUserEmail = email
+                    }
+                }
     }
 }

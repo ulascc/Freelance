@@ -399,6 +399,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Application" image="list.clipboard" catalog="system" id="x6Y-ha-ozc"/>
+                    <navigationItem key="navigationItem" id="zfL-vN-OXH"/>
                     <connections>
                         <outlet property="applicationsTableView" destination="Nq8-oa-7KQ" id="hyd-Np-xjq"/>
                         <segue destination="eco-3y-28J" kind="show" identifier="ApplicationDetailSegue" id="CIc-oI-Y3D"/>
@@ -406,7 +407,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RIQ-V9-cSg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9442" y="-303"/>
+            <point key="canvasLocation" x="9442" y="-748"/>
         </scene>
         <!--Application Detail View Controller-->
         <scene sceneID="SJu-DA-Aae">
@@ -435,7 +436,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="tittle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Efe-qb-A8t">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Efe-qb-A8t">
                                 <rect key="frame" x="13" y="240" width="315" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
@@ -450,7 +451,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gk0-qh-St9">
-                                <rect key="frame" x="16" y="460" width="96" height="36"/>
+                                <rect key="frame" x="16" y="460" width="123" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
                                 <nil key="textColor"/>
@@ -488,8 +489,17 @@
                                 <rect key="frame" x="34" y="71.666666666666657" width="319" height="159"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZIS-dL-HOq">
+                                <rect key="frame" x="282" y="246" width="111" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="pencil.line" catalog="system" title="Edit Job"/>
+                                <connections>
+                                    <action selector="EditJobButtonPressed:" destination="eco-3y-28J" eventType="touchUpInside" id="gGk-g3-hDo"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="uid" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fIb-P0-PM4">
-                                <rect key="frame" x="299" y="462" width="41" height="27"/>
+                                <rect key="frame" x="317" y="462" width="41" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
@@ -512,11 +522,146 @@
                         <outlet property="titleLabel" destination="Efe-qb-A8t" id="Waz-s0-F44"/>
                         <outlet property="uidLabel" destination="fIb-P0-PM4" id="QhG-Jg-heB"/>
                         <segue destination="Cmm-Ep-JIr" kind="presentation" identifier="showApplicantProfile" id="pbi-cB-9AK"/>
+                        <segue destination="5Y5-zJ-Ol4" kind="show" identifier="EditJobSegue" id="fPg-gh-bnO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BI2-87-Adh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9441.9847328244268" y="439.43661971830988"/>
+            <point key="canvasLocation" x="9441.9847328244268" y="48.591549295774648"/>
+        </scene>
+        <!--Edit Job View Controller-->
+        <scene sceneID="uYf-ky-az8">
+            <objects>
+                <viewController id="5Y5-zJ-Ol4" customClass="EditJobViewController" customModule="Freelance" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="95c-xa-b64">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Edit Job" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VA7-Vc-bTw">
+                                <rect key="frame" x="16" y="115" width="92" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="─────────────────" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RVM-yw-aoH">
+                                <rect key="frame" x="9" y="140" width="374" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8gQ-xv-Rfr">
+                                <rect key="frame" x="16" y="393" width="96" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2KP-Cq-LxE">
+                                <rect key="frame" x="16" y="606" width="53" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="94f-oS-lsS">
+                                <rect key="frame" x="16" y="430" width="361" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jpy-jx-E3C">
+                                <rect key="frame" x="16" y="540" width="361" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sku-77-XGC">
+                                <rect key="frame" x="16" y="643" width="361" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q2G-FA-Gq6">
+                                <rect key="frame" x="16" y="704" width="114" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Edit Job"/>
+                                <connections>
+                                    <action selector="EditJobButtonPressed:" destination="5Y5-zJ-Ol4" eventType="touchUpInside" id="7Bv-B0-Ekm"/>
+                                    <action selector="editButtonPressed:" destination="8za-zW-zYx" eventType="touchUpInside" id="qcX-vv-yXH"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tso-mj-avp">
+                                <rect key="frame" x="16" y="503" width="42" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Job Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dgO-pu-qly">
+                                <rect key="frame" x="16" y="184" width="89" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Explanation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKp-vm-eXk">
+                                <rect key="frame" x="18" y="286" width="121" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wOY-f1-bFh">
+                                <rect key="frame" x="16" y="221" width="361" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O8h-G5-ald">
+                                <rect key="frame" x="146" y="704" width="134" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="gray" image="delete.right" catalog="system" title="Delete Job">
+                                    <color key="baseForegroundColor" red="1" green="0.082319939999999994" blue="0.14248915549999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="DeleteJobButtonPressed:" destination="5Y5-zJ-Ol4" eventType="touchUpInside" id="hzf-4z-r3M"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="jobID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qwt-sx-Ipx">
+                                <rect key="frame" x="240" y="121" width="40" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XHX-2e-5uW">
+                                <rect key="frame" x="18" y="331" width="361" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mw4-Qi-UbE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="lEW-b2-g6h"/>
+                    <connections>
+                        <outlet property="categoryTextField" destination="94f-oS-lsS" id="DGF-B9-UCg"/>
+                        <outlet property="cityTextField" destination="Jpy-jx-E3C" id="iGU-Xx-kmy"/>
+                        <outlet property="explanationTextField" destination="XHX-2e-5uW" id="nFl-CC-Y80"/>
+                        <outlet property="jobIDLabel" destination="Qwt-sx-Ipx" id="zvv-wI-LED"/>
+                        <outlet property="jobTitleTextField" destination="wOY-f1-bFh" id="phv-rb-YWh"/>
+                        <outlet property="priceTextField" destination="sku-77-XGC" id="LlY-fj-cNj"/>
+                        <segue destination="k3C-qM-GwD" kind="show" identifier="backToApplicationsSegue" id="P0C-6e-LGY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XFE-bq-QSK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="10667.938931297709" y="-363.38028169014086"/>
         </scene>
         <!--Applicant Profie View Controller-->
         <scene sceneID="sSa-26-CXq">
@@ -607,7 +752,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RuX-nJ-Cq0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10597.709923664122" y="438.73239436619718"/>
+            <point key="canvasLocation" x="10668" y="393"/>
         </scene>
         <!--Preferences View Controller-->
         <scene sceneID="AmL-34-4ki">
@@ -1108,10 +1253,10 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="igX-pi-nes">
-                                <rect key="frame" x="16" y="645" width="85" height="35"/>
+                                <rect key="frame" x="16" y="645" width="115" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Edit"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Edit Profile"/>
                                 <connections>
                                     <action selector="editButtonPressed:" destination="8za-zW-zYx" eventType="touchUpInside" id="kGr-KQ-NVG"/>
                                 </connections>
@@ -1282,7 +1427,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iX0-Mq-AwF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9441.9847328244268" y="-1064.0845070422536"/>
+            <point key="canvasLocation" x="9442" y="-1488"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1JJ-ob-vFb">
@@ -1322,15 +1467,17 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ekp-k5-9VW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7691" y="393"/>
+            <point key="canvasLocation" x="7691" y="202"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="p0F-0Z-uKh"/>
+        <segue reference="P0C-6e-LGY"/>
         <segue reference="Xse-7W-dK9"/>
         <segue reference="W0y-G2-ksY"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="delete.right" catalog="system" width="128" height="102"/>
         <image name="gear" catalog="system" width="128" height="122"/>
         <image name="house" catalog="system" width="128" height="104"/>
         <image name="line.3.horizontal.decrease.circle" catalog="system" width="128" height="123"/>

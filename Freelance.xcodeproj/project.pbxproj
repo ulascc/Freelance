@@ -13,6 +13,7 @@
 		621385592AFC0219005551C8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621385582AFC0219005551C8 /* MainViewController.swift */; };
 		621758A32B488D11009E8FF6 /* MyApplicationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621758A22B488D11009E8FF6 /* MyApplicationsViewController.swift */; };
 		622B2EA02B60908C00F6FDAE /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B2E9F2B60908C00F6FDAE /* EditProfileViewController.swift */; };
+		622B2EA22B60A17500F6FDAE /* EditJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B2EA12B60A17500F6FDAE /* EditJobViewController.swift */; };
 		622B99082B2A700000322605 /* JobDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B99072B2A700000322605 /* JobDetailViewController.swift */; };
 		62471CA12AFABB730098FB7A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62471CA02AFABB720098FB7A /* GoogleService-Info.plist */; };
 		62674F692B37AB82007E2272 /* ApplicationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62674F682B37AB82007E2272 /* ApplicationDetailViewController.swift */; };
@@ -54,6 +55,7 @@
 		621385582AFC0219005551C8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		621758A22B488D11009E8FF6 /* MyApplicationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApplicationsViewController.swift; sourceTree = "<group>"; };
 		622B2E9F2B60908C00F6FDAE /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		622B2EA12B60A17500F6FDAE /* EditJobViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditJobViewController.swift; sourceTree = "<group>"; };
 		622B99072B2A700000322605 /* JobDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailViewController.swift; sourceTree = "<group>"; };
 		62471CA02AFABB720098FB7A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		62674F682B37AB82007E2272 /* ApplicationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDetailViewController.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				62693F212B4C7D6300187825 /* ForgotPasswordViewController.swift */,
 				6283E8622B60883000193C89 /* PreferencesViewController.swift */,
 				622B2E9F2B60908C00F6FDAE /* EditProfileViewController.swift */,
+				622B2EA12B60A17500F6FDAE /* EditJobViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				621758A32B488D11009E8FF6 /* MyApplicationsViewController.swift in Sources */,
 				62009C1C2AFBD7AE00151801 /* Job.swift in Sources */,
 				62CE2ACE2AFD6094004B9E9B /* Categories.swift in Sources */,
+				622B2EA22B60A17500F6FDAE /* EditJobViewController.swift in Sources */,
 				628BC3242B28D82C006362FA /* JobCell.swift in Sources */,
 				628D527C2B2FAF12003EAEF7 /* JobApplication .swift in Sources */,
 			);

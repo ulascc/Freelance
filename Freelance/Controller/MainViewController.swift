@@ -55,6 +55,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         citySwitch.isOn = false
     }
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchFirestoreData()
+    }
+    
+    
     @objc func refreshData() {
         // Firestore'dan verileri çekin
         fetchFirestoreData()

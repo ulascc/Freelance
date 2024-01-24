@@ -32,6 +32,11 @@ class ApplicationsViewController: UIViewController, UITableViewDelegate, UITable
         fetchJobsFromFirebase()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchJobsFromFirebase() 
+    }
+    
     @objc func refreshData() {
         // Firestore'dan verileri çekin
         fetchJobsFromFirebase()

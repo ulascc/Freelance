@@ -12,6 +12,7 @@
 		621385552AFC01CE005551C8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621385542AFC01CE005551C8 /* ProfileViewController.swift */; };
 		621385592AFC0219005551C8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621385582AFC0219005551C8 /* MainViewController.swift */; };
 		621758A32B488D11009E8FF6 /* MyApplicationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621758A22B488D11009E8FF6 /* MyApplicationsViewController.swift */; };
+		622B2EA02B60908C00F6FDAE /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B2E9F2B60908C00F6FDAE /* EditProfileViewController.swift */; };
 		622B99082B2A700000322605 /* JobDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B99072B2A700000322605 /* JobDetailViewController.swift */; };
 		62471CA12AFABB730098FB7A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62471CA02AFABB720098FB7A /* GoogleService-Info.plist */; };
 		62674F692B37AB82007E2272 /* ApplicationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62674F682B37AB82007E2272 /* ApplicationDetailViewController.swift */; };
@@ -52,6 +53,7 @@
 		621385542AFC01CE005551C8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		621385582AFC0219005551C8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		621758A22B488D11009E8FF6 /* MyApplicationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApplicationsViewController.swift; sourceTree = "<group>"; };
+		622B2E9F2B60908C00F6FDAE /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		622B99072B2A700000322605 /* JobDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailViewController.swift; sourceTree = "<group>"; };
 		62471CA02AFABB720098FB7A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		62674F682B37AB82007E2272 /* ApplicationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDetailViewController.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				621758A22B488D11009E8FF6 /* MyApplicationsViewController.swift */,
 				62693F212B4C7D6300187825 /* ForgotPasswordViewController.swift */,
 				6283E8622B60883000193C89 /* PreferencesViewController.swift */,
+				622B2E9F2B60908C00F6FDAE /* EditProfileViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				628E03502AF9770D009C503B /* SceneDelegate.swift in Sources */,
 				62F08BCD2B365B4D00EF243A /* ApplicationsViewController.swift in Sources */,
 				6283E8632B60883000193C89 /* PreferencesViewController.swift in Sources */,
+				622B2EA02B60908C00F6FDAE /* EditProfileViewController.swift in Sources */,
 				62FBDAA42AF990D9002E396C /* WelcomViewController.swift in Sources */,
 				621385552AFC01CE005551C8 /* ProfileViewController.swift in Sources */,
 				622B99082B2A700000322605 /* JobDetailViewController.swift in Sources */,
